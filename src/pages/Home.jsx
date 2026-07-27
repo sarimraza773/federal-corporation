@@ -4,6 +4,7 @@ import HeroCarousel from '../components/HeroCarousel.jsx';
 import Section from '../components/Section.jsx';
 import Card from '../components/Card.jsx';
 import ReviewsFeature from '../components/ReviewsFeature.jsx';
+import LatestNews from '../components/LatestNews.jsx';
 
 export default function Home() {
   return (
@@ -29,6 +30,8 @@ export default function Home() {
           </Card>
         </div>
       </Section>
+
+      <LatestNews />
 
       <Section className="reviews-section mt-10">
         <ReviewsFeature />

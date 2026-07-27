@@ -5,7 +5,12 @@ The website remains a React/Vite single-page app hosted at `/rizvi-rizvi/`. Supa
 ## 1. Create and configure Supabase
 
 1. Create a Supabase project.
-2. In the Supabase SQL Editor, run `supabase/migrations/202607270001_news_articles.sql`. The migration is idempotent and creates the tables, indexes, update trigger, private `article-thumbnails` bucket, grants, RLS policies, and storage policies.
+2. In the Supabase SQL Editor, run the migrations in filename order:
+
+   - For a new project, run `supabase/migrations/202607270001_news_articles.sql`, then `supabase/migrations/202607270002_add_article_author_name.sql`.
+   - For an existing project where `202607270001_news_articles.sql` has already been applied, run only `supabase/migrations/202607270002_add_article_author_name.sql`.
+
+   The second migration safely backfills existing rows with `Rizvi & Rizvi`, then requires every stored `author_name` to contain 1–120 non-whitespace characters. It does not change the existing RLS policies or the authenticated `author_id`.
 3. In Authentication, create or invite the first staff user by email. Public self-registration is not used by this website.
 4. Copy that user's UUID from Authentication > Users.
 5. While signed in to the Supabase dashboard as the project owner, run this once in SQL Editor:
@@ -42,7 +47,7 @@ npm ci
 npm run dev
 ```
 
-Open `http://localhost:5173/staff/login`. Sign in, choose **New Article**, complete **Title** and **Article**, and select **Save Draft** or **Publish Article**. A thumbnail is optional and may be JPG, PNG, WebP, or GIF up to 5 MB. Existing article slugs remain unchanged during title edits.
+Open `http://localhost:5173/staff/login`. Sign in, choose **New Article**, complete **Title**, **Author Name**, and **Article**, and select **Save Draft** or **Publish Article**. A thumbnail is optional and may be JPG, PNG, WebP, or GIF up to 5 MB. Existing article slugs remain unchanged during title edits.
 
 ## 3. GitHub Pages configuration
 
@@ -59,5 +64,19 @@ The project URL and publishable key are designed for browser use. Security comes
 
 - Public visitors can select only published articles. Drafts are protected by database policy, not merely hidden in React.
 - Only users present in `approved_staff` can create, edit, publish, unpublish, delete, or manage thumbnails.
-- Removing an article thumbnail is confirmed. Replacement uploads are deleted if the article save fails, and the old file is deleted only after the article update succeeds.
+- `author_id` remains the authenticated staff-account UUID used for authorization and audit identity. `author_name` is the trimmed, human-readable public byline.
+- The homepage requests one published article, ordered by non-null `published_at` descending. It renders no News section while none exists or when the optional query fails.
+- Removing an article thumbnail is confirmed. Replacement uploads are deleted if the article save fails, and the old file is deleted only after the article update succeeds. Article deletion removes the database row first, then removes its former thumbnail only when no other article references that exact storage path.
 - The site is client-rendered. Page titles and descriptions update after JavaScript loads, but per-article search indexing and social link previews can be less reliable than with server rendering or prerendering.
+
+## Authorization verification
+
+The migration preserves these database-enforced rules:
+
+| Session | Published articles and bylines | Drafts | Create/update/delete | Thumbnail management |
+| --- | --- | --- | --- | --- |
+| Signed out | Allowed | Denied | Denied | Published thumbnails are readable only through signed URLs |
+| Authenticated, not approved | Allowed | Denied | Denied | Denied |
+| Approved staff | Allowed | Allowed | Allowed | Allowed |
+
+The homepage and `/news` queries also explicitly filter `status = 'published'`; RLS remains the final enforcement layer. Verify these cases against the live Supabase project after applying both migrations, because a local build cannot prove the deployed project's policies or staff allowlist.

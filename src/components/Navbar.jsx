@@ -6,10 +6,10 @@ const nav = [
   { to: '/', label: 'Home' },
   { to: '/team', label: 'Team' },
   { to: '/services', label: 'Services' },
-  { to: '/news', label: 'News' },
   { to: '/contact', label: 'Contact' },
   { to: '/about', label: 'About Us' },
   { to: '/useful-links', label: 'Resources' },
+  { to: '/news', label: 'News' },
 ];
 
 function NavButton({ to, label }) {

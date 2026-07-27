@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import NewsCard from '../components/NewsCard.jsx';
 import Seo from '../components/Seo.jsx';
 import Section from '../components/Section.jsx';
-import { ARTICLE_SELECT, formatDate } from '../lib/articles.js';
+import {
+  ARTICLE_CARD_SELECT,
+  LEGACY_ARTICLE_CARD_SELECT,
+  needsAuthorNameMigration,
+  withAuthorFallback,
+} from '../lib/articles.js';
 import { getThumbnailUrl, isSupabaseConfigured, readableError, supabase } from '../lib/supabase.js';
 
 export default function News() {
@@ -14,18 +19,28 @@ export default function News() {
       setState({ loading: false, articles: [], error: 'News is not connected yet. Please check back soon.' });
       return undefined;
     }
-    supabase
-      .from('articles')
-      .select(ARTICLE_SELECT)
-      .eq('status', 'published')
-      .order('published_at', { ascending: false })
-      .then(async ({ data, error }) => {
-        const articles = error ? [] : await Promise.all((data || []).map(async (article) => ({
-          ...article,
-          thumbnail_url: await getThumbnailUrl(article.thumbnail_path),
-        })));
-        if (active) setState({ loading: false, articles, error: error ? readableError(error) : '' });
-      });
+    async function loadArticles(select) {
+      return supabase
+        .from('articles')
+        .select(select)
+        .eq('status', 'published')
+        .not('published_at', 'is', null)
+        .order('published_at', { ascending: false, nullsFirst: false });
+    }
+
+    async function load() {
+      let response = await loadArticles(ARTICLE_CARD_SELECT);
+      if (needsAuthorNameMigration(response.error)) {
+        response = await loadArticles(LEGACY_ARTICLE_CARD_SELECT);
+      }
+      const articles = response.error ? [] : await Promise.all((response.data || []).map(async (item) => {
+        const article = withAuthorFallback(item);
+        return { ...article, thumbnail_url: await getThumbnailUrl(article.thumbnail_path) };
+      }));
+      if (active) setState({ loading: false, articles, error: response.error ? readableError(response.error) : '' });
+    }
+
+    load();
     return () => { active = false; };
   }, []);
 
@@ -52,24 +67,7 @@ export default function News() {
         ) : null}
 
         <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {state.articles.map((article) => {
-            const thumbnail = article.thumbnail_url;
-            return (
-              <article key={article.id} className="overflow-hidden rounded-2xl border border-navy-900/15 bg-white/45 shadow-soft backdrop-blur-sm">
-                {thumbnail ? <img src={thumbnail} alt="" className="aspect-[16/9] w-full object-cover" loading="lazy" /> : (
-                  <div className="grid aspect-[16/9] place-items-center bg-navy-900/5 font-serif text-lg text-navy-900/55">Federalcorporation</div>
-                )}
-                <div className="p-6">
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-maroon-900">{formatDate(article.published_at)}</p>
-                  <h2 className="mt-3 font-serif text-2xl leading-tight text-ink-100">
-                    <Link className="rounded-sm hover:text-maroon-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy-900" to={`/news/${article.slug}`}>{article.title}</Link>
-                  </h2>
-                  {article.excerpt ? <p className="mt-4 line-clamp-3 text-sm leading-6 text-ink-200/80">{article.excerpt}</p> : null}
-                  <Link to={`/news/${article.slug}`} className="mt-5 inline-flex text-sm font-semibold text-maroon-900 hover:underline">Read article <span aria-hidden="true" className="ml-2">→</span></Link>
-                </div>
-              </article>
-            );
-          })}
+          {state.articles.map((article) => <NewsCard key={article.id} article={article} />)}
         </div>
       </Section>
     </>
