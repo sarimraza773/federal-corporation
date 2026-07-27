@@ -8,22 +8,32 @@ import slide5 from '../assets/slideshow5.jpg';
 const slidesBase = [
   {
     image: slide1,
-    tag: 'Global Reach',
-    title: 'Modern legal practice, timeless values.',
-    desc: 'Delivering trusted counsel and innovative solutions across corporate, tax and IP law.',
+    tag: 'Tax',
+    title: 'Tax',
+    desc: 'Filing, tax advisory, and litigation.',
   },
   {
     image: slide2,
-    tag: 'Client-first',
-    title: 'Precision, clarity, outcomes.',
-    desc: 'A client-first approach with clear communication and practical results.',
+    tag: 'Corporate and Commercial',
+    title: 'Corporate and Commercial',
+    desc: 'Regulatory advisory, incorporation, and statutory filing.',
   },
   {
     image: slide5,
-    tag: 'Trusted Counsel',
-    title: 'At the heart of the city.',
-    desc: "We reflect the dynamism and ambition of our clients' ventures.",
+    tag: 'Conveyance',
+    title: 'Conveyance',
+    desc: 'Property and real estate, succession/inheritance, registration, and documentation.',
   },
+];
+
+const heroServices = [
+  { label: 'Property & Real Estate', to: '/services/real-estate-conveyance' },
+  { label: 'Tax', to: '/services/taxation' },
+  { label: 'Corporate & Commercial', to: '/services/corporate' },
+  { label: 'Intellectual Property', to: '/services/intellectual-property' },
+  { label: 'Anti Money Laundering & Anti Benami', to: '/services/anti-money-laundering' },
+  { label: 'Competition/Antitrust Law', to: '/services/competition-law' },
+  { label: 'Other Services', to: '/services', fullWidth: true },
 ];
 
 function Dot({ active, onClick }) {
@@ -112,34 +122,22 @@ export default function HeroCarousel({ slides = slidesBase }) {
                       Explore services
                     </Link>
                   </div>
-
-                  <div className="mt-8 grid max-w-2xl grid-cols-1 gap-3 sm:grid-cols-3">
-                    {['50 years of practice', 'Karachi, Pakistan', 'Clear practical counsel'].map((item) => (
-                      <div
-                        key={item}
-                        className="rounded-xl border border-navy-900/10 bg-white/25 px-4 py-3 text-sm font-medium text-ink-100"
-                      >
-                        {item}
-                      </div>
-                    ))}
-                  </div>
                 </div>
 
                 <div className="hero-feature-panel rounded-2xl border border-navy-900/10 bg-white/20 p-5 sm:p-6">
                   <p className="text-xs uppercase tracking-[0.18em] text-ink-200/80">Featured</p>
-                  <p className="mt-3 text-sm text-ink-100">
-                    Counsel that moves at the speed of business.
-                  </p>
-                  <p className="mt-2 text-sm text-ink-200/80">
-                    A client-first approach with clear communication and practical outcomes.
-                  </p>
+                  <p className="mt-3 text-sm font-medium text-ink-100">Core legal services</p>
 
-                  <div className="mt-6 rounded-xl bg-white/10 p-4">
-                    <div className="grid grid-cols-1 gap-3 text-xs text-ink-200/80 sm:grid-cols-2">
-                      <span>Karachi, Pakistan</span>
-                      <span>Privately held</span>
-                      <span>11-50 employees</span>
-                    </div>
+                  <div className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                    {heroServices.map((service) => (
+                      <Link
+                        key={service.to}
+                        to={service.to}
+                        className={`rounded-xl border border-navy-900/10 bg-white/25 px-3 py-2 text-xs font-medium leading-snug text-ink-100 transition-colors hover:bg-white/45 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy-900 ${service.fullWidth ? 'sm:col-span-2 lg:col-span-3' : ''}`}
+                      >
+                        {service.label}
+                      </Link>
+                    ))}
                   </div>
                 </div>
               </div>

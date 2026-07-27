@@ -10,13 +10,13 @@ export default function Services() {
     <>
       <Seo
         title="Services"
-        description="Services offered by Federalcorporation include conveyance, taxation, corporate, non-profit, arbitration, constitutional litigation, and competition matters."
+        description="Services offered by Federalcorporation include conveyance, taxation, corporate, intellectual property, non-profit, anti-money laundering, and competition matters."
       />
 
       <Section title="Capabilities">
         <p className="mx-auto w-full max-w-6xl text-center text-ink-200/80">
           The firm's profile lists services including taxation, corporate, intellectual property,
-          real estate conveyance, arbitration, constitutional matters, and competition law.
+          real estate conveyance, anti-money laundering, non-profit organisations, and competition law.
         </p>
 
         <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">

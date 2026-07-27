@@ -1,7 +1,5 @@
 import antiMoneyLaunderingImage from '../assets/services/anti-money-laundering.jpg';
-import arbitrationImage from '../assets/services/arbitration.jpg';
 import competitionLawImage from '../assets/services/competition-law.jpg';
-import constitutionalLitigationImage from '../assets/services/constitutional-litigation.jpg';
 import conveyanceImage from '../assets/services/conveyance.webp';
 import corporateImage from '../assets/services/corporate.jpg';
 import intellectualPropertyImage from '../assets/services/intellectual-property.webp';
@@ -15,7 +13,5 @@ export const serviceImages = {
   corporate: corporateImage,
   'intellectual-property': intellectualPropertyImage,
   'real-estate-conveyance': conveyanceImage,
-  arbitration: arbitrationImage,
-  'constitutional-litigation': constitutionalLitigationImage,
   'competition-law': competitionLawImage,
 };

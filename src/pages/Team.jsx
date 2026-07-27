@@ -7,7 +7,7 @@ const partners = [
     name: 'Syed Faiq Raza Rizvi',
     role: 'Managing Partner',
     status: 'On leave',
-    text: 'Provides broad legal advisory and dispute resolution services across litigation, arbitration, taxation, corporate, real estate, trademark, and trust registration matters. With a practical understanding of legal and regulatory requirements, he helps clients navigate complex issues through strategic advocacy, commercial insight, and a results-oriented approach.',
+    text: 'Provides broad legal advisory and dispute resolution services across taxation, corporate, real estate, trademark, and trust registration matters. With a practical understanding of legal and regulatory requirements, he helps clients navigate complex issues through strategic advocacy, commercial insight, and a results-oriented approach.',
   },
   {
     name: 'Syed Wasim Raza Rizvi',

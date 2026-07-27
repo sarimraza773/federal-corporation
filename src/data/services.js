@@ -1,9 +1,9 @@
 export const services = [
   {
     slug: 'taxation',
-    title: 'Taxation',
+    title: 'Tax',
     fullTitle: 'Taxation (Direct and Indirect)',
-    subtitle: 'Advisory & representation',
+    subtitle: 'Tax Filing, Advisory & Litigation',
     text: 'Tax planning, compliance guidance, and support on tax-related disputes and filings.',
     summary:
       'Federalcorporation assists clients with direct and indirect tax matters, from everyday compliance to strategic planning and dispute support.',
@@ -43,9 +43,9 @@ export const services = [
   },
   {
     slug: 'corporate',
-    title: 'Corporate',
+    title: 'Corporate and Commercial',
     fullTitle: 'Corporate',
-    subtitle: 'Company & commercial matters',
+    subtitle: 'Company Incorporation, Regulatory, and Compliance Matters',
     text: 'Corporate structuring, governance, contracts, and commercial advisory.',
     summary:
       'The corporate practice helps clients structure, operate, document, and grow their businesses with clear legal support.',
@@ -71,7 +71,7 @@ export const services = [
   },
   {
     slug: 'real-estate-conveyance',
-    title: 'Conveyance',
+    title: 'Property Conveyance',
     fullTitle: 'Real Estate Conveyance',
     subtitle: 'Transactions & documentation',
     text: 'Support on property documentation, conveyance, and transactional execution.',
@@ -81,34 +81,6 @@ export const services = [
       'Sale deeds, transfer documents, lease documentation, and property papers.',
       'Title review, verification support, and transactional due diligence.',
       'Coordination through execution, filing, and procedural requirements.',
-    ],
-  },
-  {
-    slug: 'arbitration',
-    title: 'Arbitration',
-    fullTitle: 'Arbitration',
-    subtitle: 'Efficient dispute resolution',
-    text: 'Arbitration support and representation with a focus on clarity and outcomes.',
-    summary:
-      'Federalcorporation assists clients with preparation, representation, and settlement strategy in arbitration matters.',
-    points: [
-      'Case assessment, documentation, and evidence organisation.',
-      'Representation support in arbitral proceedings.',
-      'Settlement, enforcement, and post-award advisory support.',
-    ],
-  },
-  {
-    slug: 'constitutional-litigation',
-    title: 'Constitutional Litigation',
-    fullTitle: 'Constitutional Litigation',
-    subtitle: 'Public law matters',
-    text: 'Representation in constitutional litigation and related legal proceedings.',
-    summary:
-      'The firm supports clients in public law and constitutional matters requiring careful strategy and disciplined filings.',
-    points: [
-      'Constitutional petitions, drafting, and procedural support.',
-      'Representation strategy for public law and administrative matters.',
-      'Research, documentation, and case preparation for court proceedings.',
     ],
   },
   {

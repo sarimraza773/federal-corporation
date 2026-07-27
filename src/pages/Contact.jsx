@@ -17,8 +17,8 @@ const primaryContacts = [
     label: 'Tel',
     icon: Phone,
     items: [
-      { text: '+9236321038', href: 'tel:+9236321038' },
-      { text: '+9236316677', href: 'tel:+9236316677' },
+      { text: '+922136321038', href: 'tel:+922136321038' },
+      { text: '+922136316677', href: 'tel:+922136316677' },
     ],
   },
   {
@@ -115,17 +115,6 @@ export default function Contact() {
               </div>
 
               <div className="mt-6 space-y-4 text-sm leading-relaxed">
-                <p>
-                  <span className="block text-xs font-semibold uppercase tracking-[0.18em] text-white/55">
-                    Email
-                  </span>
-                  <a
-                    href="mailto:epayments.federal@gmail.com"
-                    className="mt-1 inline-block text-white transition-colors hover:text-white/80"
-                  >
-                    epayments.federal@gmail.com
-                  </a>
-                </p>
                 <p>
                   <span className="block text-xs font-semibold uppercase tracking-[0.18em] text-white/55">
                     Cell

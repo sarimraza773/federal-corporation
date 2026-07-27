@@ -12,7 +12,7 @@ export default function Footer() {
             <div className="font-serif text-xl text-white tracking-tightish">Federalcorporation</div>
             <p className="mt-2 max-w-xl text-sm text-white/70">
               Legal Services - Karachi. Practice areas include taxation, corporate, intellectual property,
-              real estate conveyance, arbitration, and constitutional litigation.
+              real estate conveyance, anti-money laundering, and competition law.
             </p>
           </div>
 
@@ -25,6 +25,9 @@ export default function Footer() {
             </NavLink>
             <NavLink className="text-sm text-white/70 hover:text-white" to="/contact">
               Contact
+            </NavLink>
+            <NavLink className="text-sm text-white/70 hover:text-white" to="/staff/login">
+              Staff Login
             </NavLink>
           </div>
         </div>
