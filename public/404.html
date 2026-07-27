@@ -3,7 +3,15 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <script src="./store-redirect.js"></script>
+    <script>
+      try {
+        sessionStorage.setItem('redirect', location.href);
+      } catch (_) {
+        // Continue even when session storage is unavailable.
+      }
+
+      location.replace('/rizvi-rizvi/');
+    </script>
 </head>
 <body>
 <p>Redirecting...</p>
