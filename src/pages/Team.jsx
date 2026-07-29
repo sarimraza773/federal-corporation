@@ -69,7 +69,7 @@ export default function Team() {
                 <div className={portrait ? 'p-6 sm:p-8 lg:p-10' : 'contents'}>
                   <div className={portrait ? '' : 'lg:pr-4'}>
                     <p className="text-xs font-semibold uppercase tracking-[0.18em] text-maroon-900">
-                      {String(index + 1).padStart(2, '0')} / Leadership
+                      Leadership
                     </p>
                     <h3 className="mt-4 font-serif text-3xl leading-tight tracking-tightish text-ink-100 sm:text-4xl">
                       {partner.name}
