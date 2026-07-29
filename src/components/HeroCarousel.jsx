@@ -7,9 +7,15 @@ import slide5 from '../assets/slideshow5.jpg';
 
 const slidesBase = [
   {
+    image: slide5,
+    tag: 'Property & Real Estate',
+    title: 'Property / Real Estate Conveyance',
+    desc: 'Property and real estate, succession and inheritance, registration, and documentation.',
+  },
+  {
     image: slide1,
-    tag: 'Tax',
-    title: 'Tax',
+    tag: 'Taxation',
+    title: 'Taxation',
     desc: 'Filing, tax advisory, and litigation.',
   },
   {
@@ -18,17 +24,11 @@ const slidesBase = [
     title: 'Corporate and Commercial',
     desc: 'Regulatory advisory, incorporation, and statutory filing.',
   },
-  {
-    image: slide5,
-    tag: 'Conveyance',
-    title: 'Conveyance',
-    desc: 'Property and real estate, succession/inheritance, registration, and documentation.',
-  },
 ];
 
 const heroServices = [
   { label: 'Property & Real Estate', to: '/services/real-estate-conveyance' },
-  { label: 'Tax', to: '/services/taxation' },
+  { label: 'Taxation', to: '/services/taxation' },
   { label: 'Corporate & Commercial', to: '/services/corporate' },
   { label: 'Intellectual Property', to: '/services/intellectual-property' },
   { label: 'Anti Money Laundering & Anti Benami', to: '/services/anti-money-laundering' },

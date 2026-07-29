@@ -7,7 +7,7 @@ export default function About() {
     <>
       <Seo
         title="About"
-        description="About Federalcorporation, a Karachi-based multidisciplinary law firm celebrating 50 years of excellence."
+        description="About FederalCorporation, a Karachi-based multidisciplinary law firm celebrating 50 years of excellence."
       />
 
       <section className="px-4 pb-14 pt-8 sm:px-6 sm:pb-20 sm:pt-10 lg:px-10">
@@ -16,14 +16,14 @@ export default function About() {
             <div className="about-anniversary-identity">
               <img
                 src={logo}
-                alt="FedCorp logo"
+                alt="FederalCorporation logo"
                 width="120"
                 height="120"
                 decoding="async"
                 className="h-28 w-28 rounded-full object-contain sm:h-32 sm:w-32"
               />
               <p className="mt-4 font-sans text-2xl font-extrabold uppercase tracking-tight text-ink-100">
-                FedCorp.
+                FederalCorporation
               </p>
 
               <div className="mt-10 font-serif text-4xl uppercase leading-tight tracking-[0.12em] text-maroon-900 sm:text-5xl lg:text-6xl">
@@ -35,7 +35,7 @@ export default function About() {
 
             <div className="about-anniversary-copy">
               <p className="text-base font-medium leading-relaxed text-ink-200/80 sm:text-lg">
-                Established in 1974 as a skills development entity, <strong>FedCorp</strong>{' '}
+                Established in 1974 as a skills development entity, <strong>FederalCorporation</strong>{' '}
                 evolved into a multidisciplinary law firm by 1984. Our journey's intricacies are
                 untraceable, yet our essence lies not in falling, but in resiliently rising each time we fall.
               </p>
@@ -48,12 +48,12 @@ export default function About() {
                 </p>
 
                 <div className="my-8 grid gap-3 font-serif text-lg uppercase tracking-[0.08em] text-maroon-900 sm:grid-cols-2">
-                  <span>Corporate</span>
+                  <span>Property / Real Estate Conveyance</span>
                   <span>Taxation</span>
+                  <span>Corporate</span>
                   <span>Commercial Litigation</span>
                   <span>General Litigation</span>
                   <span>Intellectual Property</span>
-                  <span>Real-Estate Conveyance</span>
                 </div>
 
                 <p className="font-serif text-2xl text-maroon-900">and beyond!</p>
@@ -61,7 +61,7 @@ export default function About() {
                 <div className="mt-10 space-y-5">
                   <p>
                     As we reflect on our journey, we're immensely grateful for the trust and confidence our
-                    clients have placed in us. Each case, negotiation, and victory has shaped the legacy of FedCorp.
+                    clients have placed in us. Each case, negotiation, and victory has shaped the legacy of FederalCorporation.
                   </p>
                   <p>
                     To our incredible team, past and present, thank you for your dedication and brilliance.

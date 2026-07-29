@@ -1,12 +1,26 @@
 export const services = [
   {
+    slug: 'real-estate-conveyance',
+    title: 'Property & Real Estate',
+    fullTitle: 'Property / Real Estate Conveyance',
+    subtitle: 'Transactions & documentation',
+    text: 'Support on property documentation, conveyance, and transactional execution.',
+    summary:
+      'The conveyance practice supports property transfers, title documentation, due diligence, and transaction execution.',
+    points: [
+      'Sale deeds, transfer documents, lease documentation, and property papers.',
+      'Title review, verification support, and transactional due diligence.',
+      'Coordination through execution, filing, and procedural requirements.',
+    ],
+  },
+  {
     slug: 'taxation',
-    title: 'Tax',
+    title: 'Taxation',
     fullTitle: 'Taxation (Direct and Indirect)',
     subtitle: 'Tax Filing, Advisory & Litigation',
     text: 'Tax planning, compliance guidance, and support on tax-related disputes and filings.',
     summary:
-      'Federalcorporation assists clients with direct and indirect tax matters, from everyday compliance to strategic planning and dispute support.',
+      'FederalCorporation assists clients with direct and indirect tax matters, from everyday compliance to strategic planning and dispute support.',
     points: [
       'Tax registration, filing guidance, and procedural compliance.',
       'Advisory support for individuals, businesses, trusts, and organisations.',
@@ -34,7 +48,7 @@ export const services = [
     subtitle: 'Protecting institutions, preserving integrity',
     text: 'Ensuring integrity and transparency in local finance.',
     summary:
-      'Federalcorporation advises on compliance and documentation for matters involving financial transparency, beneficial ownership, and risk controls.',
+      'FederalCorporation advises on compliance and documentation for matters involving financial transparency, beneficial ownership, and risk controls.',
     points: [
       'AML and anti-benami compliance guidance for businesses and institutions.',
       'Documentation review for ownership, control, and transaction transparency.',
@@ -62,25 +76,11 @@ export const services = [
     subtitle: 'Protecting valuable rights',
     text: 'IP strategy support across trademarks/copyright and related matters.',
     summary:
-      'Federalcorporation helps clients identify, document, protect, and manage intellectual property rights.',
+      'FederalCorporation helps clients identify, document, protect, and manage intellectual property rights.',
     points: [
       'Trademark and copyright filing guidance.',
       'IP documentation, assignments, licensing, and portfolio support.',
       'Advisory support for brand protection and rights enforcement.',
-    ],
-  },
-  {
-    slug: 'real-estate-conveyance',
-    title: 'Property Conveyance',
-    fullTitle: 'Real Estate Conveyance',
-    subtitle: 'Transactions & documentation',
-    text: 'Support on property documentation, conveyance, and transactional execution.',
-    summary:
-      'The conveyance practice supports property transfers, title documentation, due diligence, and transaction execution.',
-    points: [
-      'Sale deeds, transfer documents, lease documentation, and property papers.',
-      'Title review, verification support, and transactional due diligence.',
-      'Coordination through execution, filing, and procedural requirements.',
     ],
   },
   {
@@ -90,7 +90,7 @@ export const services = [
     subtitle: 'Competition-facing issues',
     text: 'Guidance on antitrust/competition concerns and related advisory needs.',
     summary:
-      'Federalcorporation provides advisory support for clients navigating competition, monopoly, and market conduct issues.',
+      'FederalCorporation provides advisory support for clients navigating competition, monopoly, and market conduct issues.',
     points: [
       'Competition compliance guidance and commercial risk review.',
       'Advisory support for business practices, agreements, and market conduct.',
@@ -99,12 +99,16 @@ export const services = [
   },
 ];
 
-export const featuredServices = [
+const featuredServiceSlugs = new Set([
   'real-estate-conveyance',
   'taxation',
   'corporate',
   'non-profit-organisations',
-];
+]);
+
+export const featuredServices = services
+  .filter((service) => featuredServiceSlugs.has(service.slug))
+  .map((service) => service.slug);
 
 export function getServiceBySlug(slug) {
   return services.find((service) => service.slug === slug);

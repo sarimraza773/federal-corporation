@@ -41,3 +41,10 @@ export function readableError(error, fallback = 'Something went wrong. Please tr
   }
   return error.message || fallback;
 }
+
+export function readableAuthError(error) {
+  if (/failed to fetch/i.test(error?.message || '')) {
+    return 'Unable to connect. Check your internet connection and try again.';
+  }
+  return 'Email or password was not accepted.';
+}

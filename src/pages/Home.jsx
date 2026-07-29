@@ -10,8 +10,8 @@ export default function Home() {
   return (
     <>
       <Seo
-        title="Federalcorporation Legal Services"
-        description="Delivering trusted counsel and practical legal support across conveyance, taxation, corporate, and non-profit matters."
+        title="FederalCorporation Legal Services"
+        description="Delivering trusted counsel and practical legal support across property and real estate conveyance, taxation, corporate, and non-profit matters."
       />
 
       <HeroCarousel />
@@ -19,7 +19,7 @@ export default function Home() {
       <Section title="A modern legal practice built on trust.">
         <div className="home-card-grid mx-auto grid max-w-5xl grid-cols-1 gap-4 md:grid-cols-3">
           <Card title="Practice Areas" subtitle="Clear expertise across core matters" href="/services">
-            Explore services across taxation, corporate, intellectual property, real estate conveyance,
+            Explore services across property and real estate conveyance, taxation, corporate, intellectual property,
             anti-money laundering, and competition law.
           </Card>
           <Card title="Team" subtitle="Our professionals" href="/team">

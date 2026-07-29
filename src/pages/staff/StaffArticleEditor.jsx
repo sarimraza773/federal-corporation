@@ -12,10 +12,9 @@ import {
   withAuthorFallback,
 } from '../../lib/articles.js';
 import { getThumbnailUrl, readableError, removeThumbnailIfUnreferenced, supabase } from '../../lib/supabase.js';
+import { MAX_THUMBNAIL_SIZE, THUMBNAIL_TYPES, thumbnailExtension } from '../../lib/uploads.js';
 
 const emptyArticle = { title: '', author_name: '', excerpt: '', body: '', slug: '', status: 'draft', thumbnail_path: null };
-const MAX_FILE_SIZE = 5 * 1024 * 1024;
-const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 
 export default function StaffArticleEditor() {
   const { id } = useParams();
@@ -65,12 +64,12 @@ export default function StaffArticleEditor() {
     const file = event.target.files?.[0];
     setState((value) => ({ ...value, error: '', success: '' }));
     if (!file) return;
-    if (!IMAGE_TYPES.includes(file.type)) {
+    if (!THUMBNAIL_TYPES[file.type]) {
       setState((value) => ({ ...value, error: 'Choose a JPG, PNG, WebP, or GIF image.' }));
       event.target.value = '';
       return;
     }
-    if (file.size > MAX_FILE_SIZE) {
+    if (file.size > MAX_THUMBNAIL_SIZE) {
       setState((value) => ({ ...value, error: 'The thumbnail must be 5 MB or smaller.' }));
       event.target.value = '';
       return;
@@ -109,7 +108,11 @@ export default function StaffArticleEditor() {
     setState((value) => ({ ...value, pending: true, error: '', success: '' }));
     let uploadedPath = null;
     if (newFile) {
-      const extension = newFile.name.split('.').pop()?.toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg';
+      const extension = thumbnailExtension(newFile.type);
+      if (!extension) {
+        setState((value) => ({ ...value, pending: false, error: 'Choose a supported image type.' }));
+        return;
+      }
       uploadedPath = `${user.id}/${crypto.randomUUID()}.${extension}`;
       const { error } = await supabase.storage.from('article-thumbnails').upload(uploadedPath, newFile, { contentType: newFile.type, upsert: false });
       if (error) {

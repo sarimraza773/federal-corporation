@@ -16,7 +16,7 @@ export default function ServiceDetail() {
     <>
       <Seo
         title={service.fullTitle}
-        description={`${service.fullTitle} services from Federalcorporation.`}
+        description={`${service.fullTitle} services from FederalCorporation.`}
       />
 
       <Section eyebrow="Service" title={service.fullTitle}>
@@ -47,7 +47,7 @@ export default function ServiceDetail() {
               to="/contact"
               className="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-white px-5 py-3 text-sm font-semibold text-navy-900 transition-colors hover:bg-white/90"
             >
-              Contact Federalcorporation
+              Contact FederalCorporation
             </Link>
             <Link
               to="/services"

@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import Seo from '../../components/Seo.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
-import { readableError, supabase } from '../../lib/supabase.js';
+import { safeStaffRedirect } from '../../lib/navigation.js';
+import { readableAuthError, supabase } from '../../lib/supabase.js';
 
 export default function StaffLogin() {
   const { user, isStaff, loading, configured } = useAuth();
@@ -18,13 +19,13 @@ export default function StaffLogin() {
     if (status.pending || !supabase) return;
     setStatus({ pending: true, error: '' });
     const { error } = await supabase.auth.signInWithPassword(form);
-    if (error) setStatus({ pending: false, error: readableError(error, 'Email or password was not accepted.') });
-    else navigate(location.state?.from || '/staff/articles', { replace: true });
+    if (error) setStatus({ pending: false, error: readableAuthError(error) });
+    else navigate(safeStaffRedirect(location.state?.from), { replace: true });
   }
 
   return (
     <>
-      <Seo title="Staff Login" description="Secure staff access for Federalcorporation news publishing." />
+      <Seo title="Staff Login" description="Secure staff access for FederalCorporation news publishing." />
       <div className="px-4 py-14 sm:px-6 sm:py-20">
         <form onSubmit={submit} className="mx-auto max-w-md rounded-3xl border border-navy-900/15 bg-white/45 p-6 shadow-soft backdrop-blur-sm sm:p-8">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-maroon-900">Staff access</p>

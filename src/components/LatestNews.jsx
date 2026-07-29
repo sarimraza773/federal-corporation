@@ -33,10 +33,7 @@ export default function LatestNews() {
         response = await queryLatest(LEGACY_ARTICLE_CARD_SELECT);
       }
 
-      if (response.error) {
-        console.error('Unable to load the latest published article.', response.error);
-        return;
-      }
+      if (response.error) return;
       if (!active || !response.data) return;
 
       const data = withAuthorFallback(response.data);

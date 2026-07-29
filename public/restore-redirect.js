@@ -7,6 +7,7 @@
 
     var url = new URL(redirect);
     if (url.origin !== location.origin) return;
+    if (url.pathname !== '/rizvi-rizvi' && !url.pathname.startsWith('/rizvi-rizvi/')) return;
 
     history.replaceState(null, '', url.pathname + url.search + url.hash);
   } catch (_) {
