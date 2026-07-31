@@ -6,10 +6,10 @@ const nav = [
   { to: '/', label: 'Home' },
   { to: '/team', label: 'Team' },
   { to: '/services', label: 'Services' },
-  { to: '/contact', label: 'Contact' },
   { to: '/about', label: 'About Us' },
   { to: '/useful-links', label: 'Resources' },
   { to: '/news', label: 'News' },
+  { to: '/contact', label: 'Contact' },
 ];
 
 function NavButton({ to, label }) {
@@ -35,13 +35,13 @@ export default function Navbar() {
       <div className="mx-auto flex h-[4.5rem] max-w-6xl items-center justify-between gap-2 px-4 sm:px-6 lg:px-10">
         <div className="grid min-w-0 grid-rows-[auto_auto] items-center">
           <div className="flex min-w-0 items-center gap-2 sm:gap-3">
-            <span className="min-w-0 truncate font-serif text-sm leading-none text-white tracking-tightish min-[380px]:text-base sm:text-xl">
+            <span className="min-w-0 truncate font-serif text-[0.68rem] leading-none text-white tracking-tightish min-[380px]:text-base sm:text-xl">
               Rizvi&amp;ivziЯ
             </span>
             <NavLink
               to="/"
-              aria-label="FederalCorporation home"
-              className="flex min-w-0 items-center gap-2 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:gap-3"
+              aria-label="Federal Corporation home"
+              className="flex min-w-0 items-center gap-1.5 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:gap-3"
             >
               <img
                 src={logo}
@@ -49,10 +49,10 @@ export default function Navbar() {
                 width="36"
                 height="36"
                 decoding="async"
-                className="hidden h-9 w-9 shrink-0 rounded-full object-contain sm:block"
+                className="h-7 w-7 shrink-0 rounded-full object-contain min-[380px]:h-8 min-[380px]:w-8 sm:h-9 sm:w-9"
               />
-              <span className="whitespace-nowrap font-serif text-[0.82rem] leading-none text-white tracking-tightish min-[360px]:text-sm min-[420px]:text-base sm:text-xl">
-                FederalCorporation
+              <span className="whitespace-nowrap font-serif text-[0.68rem] leading-none text-white tracking-tightish min-[360px]:text-xs min-[420px]:text-base sm:text-xl">
+                Federal Corporation
               </span>
             </NavLink>
           </div>

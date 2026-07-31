@@ -28,13 +28,13 @@ export default function Team() {
     <>
       <Seo
         title="Team"
-        description="Meet the Managing Partners and professionals at FederalCorporation who provide legal services across diverse practice areas."
+        description="Meet the Managing Partners and professionals at Federal Corporation who provide legal services across diverse practice areas."
       />
 
-      <Section eyebrow="Firm leadership" title="Managing Partners">
+      <Section title="Managing Partners">
         <div className="mx-auto max-w-4xl text-center">
           <p className="text-base leading-7 text-ink-200/80 sm:text-lg">
-            FederalCorporation is led by three Managing Partners whose experience spans property and real estate
+            Federal Corporation is led by three Managing Partners whose experience spans property and real estate
             conveyance, taxation, corporate and commercial law, intellectual property, and dispute resolution.
             Together, they guide the Firm’s work with practical judgement and a longstanding commitment to client service.
           </p>

@@ -9,10 +9,9 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-10">
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div>
-            <div className="font-serif text-xl text-white tracking-tightish">FederalCorporation</div>
+            <div className="font-serif text-xl text-white tracking-tightish">Federal Corporation</div>
             <p className="mt-2 max-w-xl text-sm text-white/70">
-              Legal Services - Karachi. Practice areas include property and real estate conveyance, taxation,
-              corporate, intellectual property, anti-money laundering, and competition law.
+              Federal Corporation - Karachi.
             </p>
           </div>
 
@@ -37,7 +36,7 @@ export default function Footer() {
             Attorney Advertising / Disclaimer: This website is for general information purposes only and does not
             constitute legal advice. No attorney-client relationship is created by use of this website.
           </p>
-          <p className="mt-3">Copyright {year} FederalCorporation. All rights reserved.</p>
+          <p className="mt-3">Copyright {year} Federal Corporation. All rights reserved.</p>
         </div>
       </div>
     </footer>

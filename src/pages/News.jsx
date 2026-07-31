@@ -31,8 +31,8 @@ export default function News() {
 
   return (
     <>
-      <Seo title="News" description="News, legal updates, and articles from FederalCorporation." />
-      <Section eyebrow="Insights" title="News">
+      <Seo title="News" description="News, legal updates, and articles from Federal Corporation." />
+      <Section title="News">
         <p className="mx-auto max-w-3xl text-center text-lg leading-relaxed text-ink-200/80">
           Firm news, practical legal updates, and perspectives from our team.
         </p>

@@ -25,7 +25,7 @@ export default function StaffLogin() {
 
   return (
     <>
-      <Seo title="Staff Login" description="Secure staff access for FederalCorporation news publishing." />
+      <Seo title="Staff Login" description="Secure staff access for Federal Corporation news publishing." />
       <div className="px-4 py-14 sm:px-6 sm:py-20">
         <form onSubmit={submit} className="mx-auto max-w-md rounded-3xl border border-navy-900/15 bg-white/45 p-6 shadow-soft backdrop-blur-sm sm:p-8">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-maroon-900">Staff access</p>

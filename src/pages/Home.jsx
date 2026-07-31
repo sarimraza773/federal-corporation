@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       <Seo
-        title="FederalCorporation Legal Services"
+        title="Federal Corporation Legal Services"
         description="Delivering trusted counsel and practical legal support across property and real estate conveyance, taxation, corporate, and non-profit matters."
       />
 

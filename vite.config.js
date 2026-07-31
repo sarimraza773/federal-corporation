@@ -5,7 +5,18 @@ import react from '@vitejs/plugin-react';
 // Defaults to "/" for local dev and deployments at the domain root.
 const base = process.env.BASE_PATH || '/';
 
+const allowViteDevelopmentStyles = {
+  name: 'allow-vite-development-styles',
+  apply: 'serve',
+  transformIndexHtml(html) {
+    return html.replace(
+      "style-src 'self';",
+      "style-src 'self' 'unsafe-inline';",
+    );
+  },
+};
+
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), allowViteDevelopmentStyles],
   base,
 });

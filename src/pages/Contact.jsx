@@ -70,13 +70,13 @@ export default function Contact() {
     <>
       <Seo
         title="Contact"
-        description="Contact FederalCorporation for Karachi office details and inquiries."
+        description="Contact us for Karachi office details and legal inquiries."
       />
 
       <Section title="Get in touch">
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-base leading-relaxed text-ink-200/80 sm:text-lg">
-            Reach FederalCorporation for legal inquiries, office details, and taxation-specific support.
+            Contact us for legal inquiries, office details, and taxation-specific support.
           </p>
         </div>
 
@@ -106,7 +106,7 @@ export default function Contact() {
                 </span>
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/65">
-                    Income Tax and Sales Tax
+                    Taxation
                   </p>
                   <h3 className="mt-3 font-serif text-2xl tracking-tightish text-white">
                     Tax support contact

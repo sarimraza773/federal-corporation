@@ -6,7 +6,7 @@ export const services = [
     subtitle: 'Transactions & documentation',
     text: 'Support on property documentation, conveyance, and transactional execution.',
     summary:
-      'The conveyance practice supports property transfers, title documentation, due diligence, and transaction execution.',
+      'Our conveyance practice supports property transfers, title documentation, due diligence, and transaction execution.',
     points: [
       'Sale deeds, transfer documents, lease documentation, and property papers.',
       'Title review, verification support, and transactional due diligence.',
@@ -20,7 +20,7 @@ export const services = [
     subtitle: 'Tax Filing, Advisory & Litigation',
     text: 'Tax planning, compliance guidance, and support on tax-related disputes and filings.',
     summary:
-      'FederalCorporation assists clients with direct and indirect tax matters, from everyday compliance to strategic planning and dispute support.',
+      'We assist clients with direct and indirect tax matters, from everyday compliance to strategic planning and Dispute Resolution.',
     points: [
       'Tax registration, filing guidance, and procedural compliance.',
       'Advisory support for individuals, businesses, trusts, and organisations.',
@@ -34,7 +34,7 @@ export const services = [
     subtitle: 'Advisory & representation',
     text: 'Charities, trusts, funds, and voluntary social welfare matters.',
     summary:
-      'The firm supports non-profit bodies with structure, registration, compliance, governance, and documentation.',
+      'We support non-profit bodies with structure, registration, compliance, governance, and documentation.',
     points: [
       'Registration and documentation for charities, trusts, funds, and welfare bodies.',
       'Governance, reporting, and regulatory compliance guidance.',
@@ -48,7 +48,7 @@ export const services = [
     subtitle: 'Protecting institutions, preserving integrity',
     text: 'Ensuring integrity and transparency in local finance.',
     summary:
-      'FederalCorporation advises on compliance and documentation for matters involving financial transparency, beneficial ownership, and risk controls.',
+      'We advise on compliance and documentation for matters involving financial transparency, beneficial ownership, and risk controls.',
     points: [
       'AML and anti-benami compliance guidance for businesses and institutions.',
       'Documentation review for ownership, control, and transaction transparency.',
@@ -62,7 +62,7 @@ export const services = [
     subtitle: 'Company Incorporation, Regulatory, and Compliance Matters',
     text: 'Corporate structuring, governance, contracts, and commercial advisory.',
     summary:
-      'The corporate practice helps clients structure, operate, document, and grow their businesses with clear legal support.',
+      'Our corporate practice helps clients structure, operate, document, and grow their businesses with clear legal support.',
     points: [
       'Company incorporation, restructuring, and governance documentation.',
       'Commercial contracts, board resolutions, and shareholder arrangements.',
@@ -76,9 +76,9 @@ export const services = [
     subtitle: 'Protecting valuable rights',
     text: 'IP strategy support across trademarks/copyright and related matters.',
     summary:
-      'FederalCorporation helps clients identify, document, protect, and manage intellectual property rights.',
+      'We help clients identify, document, protect, and manage intellectual property rights.',
     points: [
-      'Trademark and copyright filing guidance.',
+      'Trademark and copyright registration.',
       'IP documentation, assignments, licensing, and portfolio support.',
       'Advisory support for brand protection and rights enforcement.',
     ],
@@ -90,7 +90,7 @@ export const services = [
     subtitle: 'Competition-facing issues',
     text: 'Guidance on antitrust/competition concerns and related advisory needs.',
     summary:
-      'FederalCorporation provides advisory support for clients navigating competition, monopoly, and market conduct issues.',
+      'We provide advisory support for clients navigating competition, monopoly, and market conduct issues.',
     points: [
       'Competition compliance guidance and commercial risk review.',
       'Advisory support for business practices, agreements, and market conduct.',

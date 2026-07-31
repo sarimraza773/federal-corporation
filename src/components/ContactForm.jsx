@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 const mailto = {
   to: 'federalcorporation@hotmail.com',
-  subject: encodeURIComponent('Website Inquiry - FederalCorporation'),
+  subject: encodeURIComponent('Website Inquiry - Federal Corporation'),
 };
 
 const limits = {
@@ -59,7 +59,7 @@ export default function ContactForm() {
           Send an inquiry
         </p>
         <h3 className="mt-3 font-serif text-2xl tracking-tightish text-ink-100">
-          Contact FederalCorporation
+          Contact Us
         </h3>
       </div>
 

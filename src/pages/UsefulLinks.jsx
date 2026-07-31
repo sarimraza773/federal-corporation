@@ -18,7 +18,6 @@ const resourceGroups = [
       { name: 'Sindh Revenue Board', url: 'https://www.srb.gos.pk/srb/', icon: Landmark },
       { name: 'KP Revenue Authority', url: 'https://kpra.kp.gov.pk', icon: Landmark },
       { name: 'Balochistan Revenue Authority', url: 'https://bra.gob.pk', icon: Landmark },
-      { name: 'Board of Revenue Sindh', url: 'https://sindhzameen.gos.pk', icon: FileSignature },
       {
         name: 'Sindh e-stamping',
         url: 'https://www.estamps.gos.pk/eStampCitizenPortal/ChallanFormView/HomePage',
@@ -42,8 +41,8 @@ const resourceGroups = [
         url: 'https://www.secp.gov.pk',
         icon: ShieldCheck,
       },
-      { name: 'Pakistan Intellectual Property', url: 'https://ipo.gov.pk', icon: FileSignature },
-      { name: 'Pakistan Competition Commission', url: 'https://www.cc.gov.pk', icon: Scale },
+      { name: 'Intellectual Property of Pakistan', url: 'https://ipo.gov.pk', icon: FileSignature },
+      { name: 'Competition Commission of Pakistan', url: 'https://www.cc.gov.pk', icon: Scale },
     ],
   },
 ];

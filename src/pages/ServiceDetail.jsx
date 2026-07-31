@@ -16,7 +16,7 @@ export default function ServiceDetail() {
     <>
       <Seo
         title={service.fullTitle}
-        description={`${service.fullTitle} services from FederalCorporation.`}
+        description={`${service.fullTitle} services from Federal Corporation.`}
       />
 
       <Section eyebrow="Service" title={service.fullTitle}>
@@ -41,13 +41,13 @@ export default function ServiceDetail() {
             <p className="text-xs uppercase tracking-[0.18em] text-white/65">Next step</p>
             <h3 className="mt-3 font-serif text-2xl tracking-tightish">Discuss this service</h3>
             <p className="mt-4 text-sm leading-relaxed text-white/75">
-              Share the documents, timeline, or questions you have and the team can guide the next practical step.
+              Share the documents, timeline, or questions you have and we can guide the next practical step.
             </p>
             <Link
               to="/contact"
               className="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-white px-5 py-3 text-sm font-semibold text-navy-900 transition-colors hover:bg-white/90"
             >
-              Contact FederalCorporation
+              Contact Federal Corporation
             </Link>
             <Link
               to="/services"
