@@ -62,7 +62,7 @@ export default function Navbar() {
         </div>
 
         <a
-          href="tel:+9236316677"
+          href="tel:+922136316677"
           className="shrink-0 rounded-xl border border-white/20 bg-white/10 px-2.5 py-2 text-[9px] font-semibold uppercase tracking-[0.06em] text-white transition-colors hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:px-5 sm:text-xs sm:tracking-[0.14em]"
         >
           Call Now
