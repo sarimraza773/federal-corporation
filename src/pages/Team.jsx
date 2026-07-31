@@ -2,9 +2,13 @@ import React from 'react';
 import Seo from '../components/Seo.jsx';
 import Section from '../components/Section.jsx';
 import faiqPortrait from '../assets/team/faiq_raza_DP.jpeg';
+import atifPortrait from '../assets/team/atif_raza_DP.png';
 import { managingPartners, professionalStaff } from '../data/team.js';
 
-const portraits = { faiq: faiqPortrait };
+const portraits = {
+  faiq: { src: faiqPortrait, width: 1066, height: 1600 },
+  atif: { src: atifPortrait, width: 1023, height: 1537 },
+};
 
 function PartnerBadges({ credentials }) {
   if (!credentials.length) return null;
@@ -55,10 +59,10 @@ export default function Team() {
                 {portrait ? (
                   <div className="relative min-h-[420px] bg-navy-900/5 sm:min-h-[520px] lg:min-h-full">
                     <img
-                      src={portrait}
-                      alt="Syed Faiq Raza, Managing Partner"
-                      width="1066"
-                      height="1600"
+                      src={portrait.src}
+                      alt={`${partner.name}, ${partner.role}`}
+                      width={portrait.width}
+                      height={portrait.height}
                       decoding="async"
                       className="absolute inset-0 h-full w-full object-cover object-[center_34%]"
                     />

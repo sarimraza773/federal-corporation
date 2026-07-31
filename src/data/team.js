@@ -22,6 +22,7 @@ export const managingPartners = [
     name: 'Syed Atif Raza',
     role: 'Managing Partner',
     credentials: [],
+    portrait: 'atif',
     biography: [
       "Syed Atif Raza completed his Bachelor's degree in Accounting from Lancaster University and subsequently obtained a Master's degree in Chartered Accounting from The University of Sydney. He then read law at University of London and has been enrolled as an Advocate of Subordinate Courts of Sindh.",
       'Mr. Atif offers legal advisory and dispute resolution services across a diverse range of practice areas, including corporate and commercial law, taxation, property, trademark and intellectual property matters, and trust registration. He advises corporate entities, financial institutions and individuals on legal, regulatory, and compliance issues. His practice encompasses regulatory compliance, risk management, contractual advisory, and the resolution of contentious matters through strategic advocacy and commercially focused legal solutions.',
