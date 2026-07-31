@@ -32,7 +32,7 @@ const primaryContacts = [
   {
     label: 'Address',
     icon: MapPin,
-    items: [{ text: 'M-2-A U.K.Square, Block 16, F.B. Area, Karachi' }],
+    items: [{ text: 'M-2-A U.K.Square, Block 16, F.B. Area, Karachi', href: 'https://maps.app.goo.gl/WYUoN4puhW53Faa77' }],
   },
 ];
 
