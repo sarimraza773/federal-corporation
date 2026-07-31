@@ -1,64 +1,53 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  ARTICLE_CARD_SELECT,
-  LEGACY_ARTICLE_CARD_SELECT,
-  needsAuthorNameMigration,
-  withAuthorFallback,
-} from '../lib/articles.js';
-import { getThumbnailUrl, supabase } from '../lib/supabase.js';
+import { homepageArticles } from '../lib/articles.js';
+import { addThumbnailUrls, getOrderedArticles, supabase } from '../lib/supabase.js';
 import NewsCard from './NewsCard.jsx';
 import Section from './Section.jsx';
 
 export default function LatestNews() {
-  const [article, setArticle] = useState(null);
+  const [articles, setArticles] = useState([]);
 
   useEffect(() => {
     let active = true;
 
-    async function loadLatestArticle() {
+    async function loadHomepageArticles() {
       if (!supabase) return;
 
-      const queryLatest = (select) => supabase
-        .from('articles')
-        .select(select)
-        .eq('status', 'published')
-        .not('published_at', 'is', null)
-        .order('published_at', { ascending: false, nullsFirst: false })
-        .limit(1)
-        .maybeSingle();
+      const response = await getOrderedArticles({ publishedOnly: true, cardsOnly: true });
+      if (response.error || !active) return;
 
-      let response = await queryLatest(ARTICLE_CARD_SELECT);
-      if (needsAuthorNameMigration(response.error)) {
-        response = await queryLatest(LEGACY_ARTICLE_CARD_SELECT);
-      }
-
-      if (response.error) return;
-      if (!active || !response.data) return;
-
-      const data = withAuthorFallback(response.data);
-      const thumbnailUrl = await getThumbnailUrl(data.thumbnail_path);
-      if (active) setArticle({ ...data, thumbnail_url: thumbnailUrl });
+      const visibleArticles = homepageArticles(response.data);
+      const articlesWithThumbnails = await addThumbnailUrls(visibleArticles);
+      if (active) setArticles(articlesWithThumbnails);
     }
 
-    loadLatestArticle();
+    loadHomepageArticles();
     return () => { active = false; };
   }, []);
 
-  if (!article) return null;
+  if (articles.length === 0) return null;
 
   return (
     <Section title="News" className="pt-2 sm:pt-4">
-      <div className="mx-auto max-w-5xl">
-        <NewsCard article={article} featured headingLevel={3} />
-        <div className="mt-5 text-right">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        {articles.map((article) => (
+          <NewsCard key={article.id} article={article} headingLevel={3} />
+        ))}
+        <article className="group h-full min-h-[250px] overflow-hidden rounded-2xl border border-navy-900/15 bg-white/45 shadow-soft backdrop-blur-sm transition-all hover:-translate-y-1 hover:bg-white/55 hover:shadow-[0_18px_44px_rgba(4,30,66,0.18)]">
           <Link
             to="/news"
-            className="inline-flex rounded-sm text-sm font-semibold text-maroon-900 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy-900"
+            className="flex h-full min-h-[250px] flex-col justify-between rounded-2xl p-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy-900"
           >
-            View all news <span aria-hidden="true" className="ml-2">→</span>
+            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-maroon-900">News archive</span>
+            <span className="font-serif text-3xl leading-tight text-ink-100 transition-colors group-hover:text-maroon-900">
+              All Articles
+            </span>
+            <span className="text-sm font-semibold text-maroon-900">
+              View every article <span aria-hidden="true" className="ml-2">→</span>
+            </span>
           </Link>
-        </div>
+        </article>
       </div>
     </Section>
   );

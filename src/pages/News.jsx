@@ -3,12 +3,12 @@ import NewsCard from '../components/NewsCard.jsx';
 import Seo from '../components/Seo.jsx';
 import Section from '../components/Section.jsx';
 import {
-  ARTICLE_CARD_SELECT,
-  LEGACY_ARTICLE_CARD_SELECT,
-  needsAuthorNameMigration,
-  withAuthorFallback,
-} from '../lib/articles.js';
-import { getThumbnailUrl, isSupabaseConfigured, readableError, supabase } from '../lib/supabase.js';
+  addThumbnailUrls,
+  getOrderedArticles,
+  isSupabaseConfigured,
+  readableError,
+  supabase,
+} from '../lib/supabase.js';
 
 export default function News() {
   const [state, setState] = useState({ loading: true, articles: [], error: '' });
@@ -19,24 +19,9 @@ export default function News() {
       setState({ loading: false, articles: [], error: 'News is not connected yet. Please check back soon.' });
       return undefined;
     }
-    async function loadArticles(select) {
-      return supabase
-        .from('articles')
-        .select(select)
-        .eq('status', 'published')
-        .not('published_at', 'is', null)
-        .order('published_at', { ascending: false, nullsFirst: false });
-    }
-
     async function load() {
-      let response = await loadArticles(ARTICLE_CARD_SELECT);
-      if (needsAuthorNameMigration(response.error)) {
-        response = await loadArticles(LEGACY_ARTICLE_CARD_SELECT);
-      }
-      const articles = response.error ? [] : await Promise.all((response.data || []).map(async (item) => {
-        const article = withAuthorFallback(item);
-        return { ...article, thumbnail_url: await getThumbnailUrl(article.thumbnail_path) };
-      }));
+      const response = await getOrderedArticles({ publishedOnly: true, cardsOnly: true });
+      const articles = response.error ? [] : await addThumbnailUrls(response.data);
       if (active) setState({ loading: false, articles, error: response.error ? readableError(response.error) : '' });
     }
 

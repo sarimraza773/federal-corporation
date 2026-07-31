@@ -56,7 +56,13 @@ export default function NewsArticle() {
       <article className="px-4 py-12 sm:px-6 sm:py-16 lg:px-10">
         <div className="mx-auto max-w-3xl">
           <Link to="/news" className="text-sm font-semibold text-maroon-900 hover:underline">← Back to News</Link>
-          <ArticleByline authorName={article.author_name} publishedAt={article.published_at} className="mt-8" />
+          <ArticleByline
+            authorName={article.author_name}
+            publishedDate={article.published_date}
+            publishedAt={article.published_at}
+            createdAt={article.created_at}
+            className="mt-8"
+          />
           <h1 className="mt-4 font-serif text-4xl leading-tight tracking-tightish text-ink-100 sm:text-5xl">{article.title}</h1>
           {article.excerpt ? <p className="mt-5 text-xl leading-relaxed text-ink-200/80">{article.excerpt}</p> : null}
           {thumbnail ? <img src={thumbnail} alt="" className="mt-8 aspect-[16/9] w-full rounded-3xl border border-navy-900/15 object-cover shadow-soft" /> : null}

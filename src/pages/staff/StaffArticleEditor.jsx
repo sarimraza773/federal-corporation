@@ -1,20 +1,36 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
+import ArticleByline from '../../components/ArticleByline.jsx';
 import Seo from '../../components/Seo.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import {
   ARTICLE_SELECT,
   DEFAULT_AUTHOR_NAME,
   LEGACY_ARTICLE_SELECT,
+  articleDate,
   bodyParagraphs,
   createSlug,
   needsAuthorNameMigration,
+  todayDateValue,
   withAuthorFallback,
+  withoutAuthorName,
 } from '../../lib/articles.js';
 import { getThumbnailUrl, readableError, removeThumbnailIfUnreferenced, supabase } from '../../lib/supabase.js';
 import { MAX_THUMBNAIL_SIZE, THUMBNAIL_TYPES, thumbnailExtension } from '../../lib/uploads.js';
 
-const emptyArticle = { title: '', author_name: '', excerpt: '', body: '', slug: '', status: 'draft', thumbnail_path: null };
+function createEmptyArticle() {
+  return {
+    title: '',
+    author_name: '',
+    excerpt: '',
+    body: '',
+    slug: '',
+    status: 'draft',
+    thumbnail_path: null,
+    published_date: todayDateValue(),
+    sort_order: null,
+  };
+}
 
 export default function StaffArticleEditor() {
   const { id } = useParams();
@@ -22,7 +38,7 @@ export default function StaffArticleEditor() {
   const navigate = useNavigate();
   const inputRef = useRef(null);
   const authorInputRef = useRef(null);
-  const [article, setArticle] = useState(emptyArticle);
+  const [article, setArticle] = useState(createEmptyArticle);
   const [initialThumbnail, setInitialThumbnail] = useState(null);
   const [newFile, setNewFile] = useState(null);
   const [preview, setPreview] = useState('');
@@ -46,7 +62,11 @@ export default function StaffArticleEditor() {
       else if (!response.data) setState((value) => ({ ...value, loading: false, missing: true }));
       else {
         const data = withAuthorFallback(response.data);
-        setArticle({ ...data, author_name: data.author_name?.trim() || DEFAULT_AUTHOR_NAME });
+        setArticle({
+          ...data,
+          author_name: data.author_name?.trim() || DEFAULT_AUTHOR_NAME,
+          published_date: articleDate(data) || todayDateValue(),
+        });
         setInitialThumbnail(data.thumbnail_path);
         setPreview(await getThumbnailUrl(data.thumbnail_path) || '');
         setState((value) => ({ ...value, loading: false }));
@@ -94,6 +114,7 @@ export default function StaffArticleEditor() {
     const title = article.title.trim();
     const authorName = article.author_name.trim();
     const body = article.body.trim();
+    const publishedDate = article.published_date;
     if (!authorName) {
       setAuthorError('Enter the author name that readers should see.');
       setState((value) => ({ ...value, error: 'Please add an author name before saving.', success: '' }));
@@ -103,6 +124,10 @@ export default function StaffArticleEditor() {
     setAuthorError('');
     if (!title || !body) {
       setState((value) => ({ ...value, error: 'Add a title and article text before saving.', success: '' }));
+      return;
+    }
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(publishedDate || '')) {
+      setState((value) => ({ ...value, error: 'Choose a valid article date before saving.', success: '' }));
       return;
     }
     setState((value) => ({ ...value, pending: true, error: '', success: '' }));
@@ -131,37 +156,58 @@ export default function StaffArticleEditor() {
       status: targetStatus,
       thumbnail_path: thumbnailPath,
       published_at: targetStatus === 'published' ? (article.published_at || now) : null,
+      published_date: publishedDate,
     };
-    let result;
-    if (id) result = await supabase.from('articles').update(values).eq('id', id).select(ARTICLE_SELECT).single();
-    else result = await supabase.from('articles').insert({ ...values, slug: createSlug(title), author_id: user.id }).select(ARTICLE_SELECT).single();
+    const valuesWithIdentity = id
+      ? values
+      : { ...values, slug: createSlug(title), author_id: user.id };
+    const writeArticle = (payload, select) => (
+      id
+        ? supabase.from('articles').update(payload).eq('id', id).select(select).single()
+        : supabase.from('articles').insert(payload).select(select).single()
+    );
+
+    let result = await writeArticle(valuesWithIdentity, ARTICLE_SELECT);
+    let usedLegacyAuthorSchema = false;
+    if (needsAuthorNameMigration(result.error)) {
+      usedLegacyAuthorSchema = true;
+      result = await writeArticle(withoutAuthorName(valuesWithIdentity), LEGACY_ARTICLE_SELECT);
+    }
 
     if (result.error) {
       if (uploadedPath) await removeThumbnailIfUnreferenced(uploadedPath);
       setState((value) => ({ ...value, pending: false, error: readableError(result.error) }));
       return;
     }
+    const savedArticle = {
+      ...withAuthorFallback(result.data),
+      author_name: result.data.author_name || authorName,
+      published_date: result.data.published_date || publishedDate,
+    };
     let thumbnailCleanupError = null;
     if (initialThumbnail && initialThumbnail !== thumbnailPath) {
       const cleanup = await removeThumbnailIfUnreferenced(initialThumbnail);
       thumbnailCleanupError = cleanup.error;
     }
     const wasPublished = article.status === 'published';
-    setArticle(result.data);
-    setInitialThumbnail(result.data.thumbnail_path);
+    setArticle(savedArticle);
+    setInitialThumbnail(savedArticle.thumbnail_path);
     setNewFile(null);
     setRemoveThumbnail(false);
-    setPreview(await getThumbnailUrl(result.data.thumbnail_path) || '');
-    const success = targetStatus === 'published'
+    setPreview(await getThumbnailUrl(savedArticle.thumbnail_path) || '');
+    let success = targetStatus === 'published'
       ? (wasPublished ? 'Published article updated.' : 'Article published.')
       : (wasPublished ? 'Article unpublished and saved as a draft.' : 'Draft saved.');
+    if (usedLegacyAuthorSchema) {
+      success += ` Apply the author-name migration to store custom bylines; readers will see ${DEFAULT_AUTHOR_NAME} until then.`;
+    }
     setState((value) => ({
       ...value,
       pending: false,
       success,
       error: thumbnailCleanupError ? `The article was saved, but the previous thumbnail could not be removed. ${readableError(thumbnailCleanupError)}` : '',
     }));
-    if (!id) navigate(`/staff/articles/${result.data.id}/edit`, { replace: true });
+    if (!id) navigate(`/staff/articles/${savedArticle.id}/edit`, { replace: true });
   }
 
   async function unpublish() {
@@ -197,6 +243,17 @@ export default function StaffArticleEditor() {
                 <span id="author-name-help" className="mt-2 block text-xs text-ink-200/70">This name appears publicly in the article byline.</span>
                 {authorError ? <span id="author-name-error" className="mt-2 block text-sm text-red-700" role="alert">{authorError}</span> : null}
               </label>
+              <label className="mt-5 block">
+                <span className="form-label">Article Date</span>
+                <input
+                  className="form-control"
+                  type="date"
+                  required
+                  value={article.published_date || ''}
+                  onChange={(event) => setArticle({ ...article, published_date: event.target.value })}
+                />
+                <span className="mt-2 block text-xs text-ink-200/70">This date appears publicly and is saved without timezone conversion.</span>
+              </label>
               <label className="mt-5 block"><span className="form-label">Short Summary <span className="font-normal normal-case tracking-normal text-ink-200/70">(optional)</span></span><textarea className="form-control" rows="3" maxLength="500" value={article.excerpt || ''} onChange={(e) => setArticle({ ...article, excerpt: e.target.value })} /></label>
               <label className="mt-5 block"><span className="form-label">Article</span><textarea className="form-control min-h-[320px]" required value={article.body} onChange={(e) => setArticle({ ...article, body: e.target.value })} placeholder="Separate paragraphs with a blank line." /></label>
               <fieldset className="mt-6 rounded-2xl border border-navy-900/15 p-5">
@@ -224,7 +281,11 @@ export default function StaffArticleEditor() {
             <aside className="self-start rounded-3xl border border-navy-900/15 bg-white/35 p-6 shadow-soft lg:sticky lg:top-40">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-maroon-900">Formatted preview</p>
               <h2 className="mt-4 font-serif text-3xl leading-tight text-ink-100">{article.title || 'Your article title'}</h2>
-              <p className="mt-3 break-words text-sm text-ink-200/80">By {article.author_name.trim() || 'Author name'}</p>
+              <ArticleByline
+                authorName={article.author_name.trim() || 'Author name'}
+                publishedDate={article.published_date}
+                className="mt-3"
+              />
               {article.excerpt ? <p className="mt-4 text-lg leading-relaxed text-ink-200/80">{article.excerpt}</p> : null}
               {preview ? <img src={preview} alt="" className="mt-5 aspect-[16/9] w-full rounded-xl object-cover" /> : null}
               <div className="mt-6 space-y-5 leading-7 text-ink-200/80">

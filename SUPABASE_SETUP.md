@@ -7,10 +7,10 @@ The website remains a React/Vite single-page app hosted at `/rizvi-rizvi/`. Supa
 1. Create a Supabase project.
 2. In the Supabase SQL Editor, run the migrations in filename order:
 
-   - For a new project, run `supabase/migrations/202607270001_news_articles.sql`, `supabase/migrations/202607270002_add_article_author_name.sql`, and `supabase/migrations/202607290001_harden_news_authorization.sql`.
+   - For a new project, run `supabase/migrations/202607270001_news_articles.sql`, `supabase/migrations/202607270002_add_article_author_name.sql`, `supabase/migrations/202607290001_harden_news_authorization.sql`, and `supabase/migrations/202607310001_add_article_dates_and_ordering.sql`.
    - For an existing project where the first migration has already been applied, apply each later migration that has not yet been run, in filename order.
 
-   The second migration safely backfills existing rows with `Rizvi & Rizvi`, then requires every stored `author_name` to contain 1–120 non-whitespace characters. The third migration prevents callers from probing another account through the staff helper, makes `author_id` immutable after creation, restricts thumbnail paths to approved image extensions, prevents in-place replacement of referenced thumbnails, and prevents deletion of any thumbnail still referenced by an article.
+   The second migration safely backfills existing rows with `Rizvi & Rizvi`, then requires every stored `author_name` to contain 1–120 non-whitespace characters. The third migration prevents callers from probing another account through the staff helper, makes `author_id` immutable after creation, restricts thumbnail paths to approved image extensions, prevents in-place replacement of referenced thumbnails, and prevents deletion of any thumbnail still referenced by an article. The fourth migration adds the date-only `published_date` and persistent `sort_order` columns, safely backfills existing articles, adds ordering indexes, assigns new articles to the beginning, and provides the approved-staff-only atomic reorder function.
 3. In Authentication, create or invite the first staff user by email. Public self-registration is not used by this website.
 4. Copy that user's UUID from Authentication > Users.
 5. While signed in to the Supabase dashboard as the project owner, run this once in SQL Editor:
@@ -47,7 +47,7 @@ npm ci
 npm run dev
 ```
 
-Open `http://localhost:5173/staff/login`. Sign in, choose **New Article**, complete **Title**, **Author Name**, and **Article**, and select **Save Draft** or **Publish Article**. A thumbnail is optional and may be JPG, PNG, WebP, or GIF up to 5 MB. Existing article slugs remain unchanged during title edits.
+Open `http://localhost:5173/staff/login`. Sign in, choose **New Article**, complete **Title**, **Author Name**, **Article Date**, and **Article**, and select **Save Draft** or **Publish Article**. A thumbnail is optional and may be JPG, PNG, WebP, or GIF up to 5 MB. Existing article slugs remain unchanged during title edits. Use **Move Up** and **Move Down** on the staff article list to persist the shared homepage and News-page order.
 
 ## 3. GitHub Pages configuration
 
@@ -65,7 +65,9 @@ The project URL and publishable key are designed for browser use. Security comes
 - Public visitors can select only published articles. Drafts are protected by database policy, not merely hidden in React.
 - Only users present in `approved_staff` can create, edit, publish, unpublish, delete, or manage thumbnails.
 - `author_id` remains the immutable authenticated staff-account UUID used for audit identity. `author_name` is the trimmed, human-readable public byline.
-- The homepage requests one published article, ordered by non-null `published_at` descending. It renders no News section while none exists or when the optional query fails.
+- Public and staff article collections use `sort_order` ascending, then `published_date` descending, then `created_at` descending. `published_date` is a PostgreSQL `date`, so the selected calendar day is displayed without timezone shifts.
+- The homepage requests the ordered published collection and renders only its first three articles, followed by an **All Articles** card. The full `/news` page renders the complete ordered published collection. The homepage renders no News section when no published article exists or when its optional query fails.
+- New rows receive a database-generated UUID and are inserted at the beginning of the saved order. Staff reordering swaps two stored `sort_order` values atomically through an approved-staff-only database function.
 - Removing an article thumbnail is confirmed. Replacement uploads are deleted if the article save fails, and the old file is deleted only after the article update succeeds. Article deletion removes the database row first, then removes its former thumbnail only when no other article references that exact storage path.
 - The site is client-rendered. Page titles and descriptions update after JavaScript loads, but per-article search indexing and social link previews can be less reliable than with server rendering or prerendering.
 
