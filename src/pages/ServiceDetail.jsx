@@ -19,7 +19,7 @@ export default function ServiceDetail() {
         description={`${service.fullTitle} services from Federal Corporation.`}
       />
 
-      <Section eyebrow="Service" title={service.fullTitle}>
+      <Section title={service.fullTitle}>
         <div className="mx-auto grid max-w-5xl gap-6 lg:grid-cols-[1fr_0.55fr]">
           <article className="rounded-3xl border border-navy-900/15 bg-white/45 p-6 shadow-soft backdrop-blur-sm sm:p-8">
             <p className="text-lg leading-relaxed text-ink-200/80">{service.summary}</p>
@@ -38,8 +38,7 @@ export default function ServiceDetail() {
           </article>
 
           <aside className="rounded-3xl border border-navy-900/15 bg-navy-900 p-6 text-white shadow-soft sm:p-8">
-            <p className="text-xs uppercase tracking-[0.18em] text-white/65">Next step</p>
-            <h3 className="mt-3 font-serif text-2xl tracking-tightish">Discuss this service</h3>
+            <h3 className="font-serif text-2xl tracking-tightish">Discuss this service</h3>
             <p className="mt-4 text-sm leading-relaxed text-white/75">
               Share the documents, timeline, or questions you have and we can guide the next practical step.
             </p>
