@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import logo from '../assets/logo.jpg';
+import logo from '../assets/fedcorp_clean_logo.png';
 
 const nav = [
   { to: '/', label: 'Home' },
@@ -35,26 +35,26 @@ export default function Navbar() {
       <div className="mx-auto flex h-[4.5rem] max-w-6xl items-center justify-between gap-2 px-4 sm:px-6 lg:px-10">
         <div className="grid min-w-0 grid-rows-[auto_auto] items-center">
           <div className="flex min-w-0 items-center gap-2 sm:gap-3">
-            <span className="min-w-0 truncate font-serif text-[0.68rem] leading-none text-white tracking-tightish min-[380px]:text-base sm:text-xl">
-              Rizvi&amp;ivziЯ
-            </span>
             <NavLink
               to="/"
               aria-label="Federal Corporation home"
               className="flex min-w-0 items-center gap-1.5 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:gap-3"
             >
+              <span className="whitespace-nowrap font-serif text-[0.68rem] leading-none text-white tracking-tightish min-[360px]:text-xs min-[420px]:text-base sm:text-xl">
+                Federal Corporation
+              </span>
               <img
                 src={logo}
                 alt=""
                 width="36"
                 height="36"
                 decoding="async"
-                className="h-7 w-7 shrink-0 rounded-full object-contain min-[380px]:h-8 min-[380px]:w-8 sm:h-9 sm:w-9"
+                className="h-7 w-7 shrink-0 scale-125 rounded-full object-contain brightness-0 invert min-[380px]:h-8 min-[380px]:w-8 sm:h-9 sm:w-9"
               />
-              <span className="whitespace-nowrap font-serif text-[0.68rem] leading-none text-white tracking-tightish min-[360px]:text-xs min-[420px]:text-base sm:text-xl">
-                Federal Corporation
-              </span>
             </NavLink>
+            <span className="min-w-0 truncate font-serif text-[0.68rem] leading-none text-white tracking-tightish min-[380px]:text-base sm:text-xl">
+              Rizvi&amp;ivziЯ
+            </span>
           </div>
           <span className="mt-1 max-w-[10.5rem] text-[7px] font-medium uppercase leading-tight tracking-[0.06em] text-white/70 min-[380px]:text-[8px] sm:max-w-none sm:whitespace-nowrap sm:text-[10px] sm:tracking-[0.12em]">
             Advocate &amp; Legal Practitioners
@@ -62,7 +62,7 @@ export default function Navbar() {
         </div>
 
         <a
-          href="tel:+922136316677"
+          href="tel:+923002039564"
           className="shrink-0 rounded-xl border border-white/20 bg-white/10 px-2.5 py-2 text-[9px] font-semibold uppercase tracking-[0.06em] text-white transition-colors hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:px-5 sm:text-xs sm:tracking-[0.14em]"
         >
           Call Now
