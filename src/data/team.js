@@ -32,17 +32,10 @@ export const managingPartners = [
 ];
 
 export const professionalStaff = [
-  { name: 'Muhammad Sadiq', role: 'Senior Manager' },
-  { name: 'Atif Waqas', role: 'Senior Tax Manager' },
-  { name: 'Zohaib Hassain', role: 'Manager' },
-  { name: 'Wajahat', role: 'Manager' },
-  { name: 'Imran Owaisi', role: 'Senior Outdoor Staff' },
-  { name: 'Nadir Hussain', role: 'Senior Outdoor Staff' },
-  { name: 'Ghulam Abbas', role: 'Outdoor Staff' },
-  { name: 'Salman Butt', role: 'Senior Staff' },
-  { name: 'Shahzab', role: 'Senior Staff' },
-  { name: 'Atif Saleem', role: 'Senior Staff' },
-  { name: 'Osama Yousuf', role: 'Senior Staff' },
-  { name: 'Hasnain', role: 'Senior Staff' },
-  { name: 'Syed Hamza Ali', role: 'Junior Tax Consultant' },
+  { name: 'Muhammad Sadiq', role: 'Manager Administration' },
+  { name: 'Zohaib Hassan', role: 'Manager Operations' },
+  { name: 'Atif Waqas', role: 'Manager Taxation' },
+  { name: 'Muhammad Imran', role: 'Head of Registration' },
+  { name: 'Nadir Hussain', role: 'Manager Registration' },
+  { name: 'Wajahat Raza', role: 'Manager' },
 ];
