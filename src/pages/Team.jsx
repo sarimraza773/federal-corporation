@@ -8,7 +8,7 @@ import { managingPartners, professionalStaff } from '../data/team.js';
 
 const portraits = {
   faiq: { src: faiqPortrait, width: 1066, height: 1600 },
-  wasim: { src: wasimPortrait, width: 1178, height: 1784 },
+  wasim: { src: wasimPortrait, width: 1023, height: 1537 },
   atif: { src: atifPortrait, width: 1023, height: 1537 },
 };
 
