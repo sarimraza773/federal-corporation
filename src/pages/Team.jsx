@@ -2,11 +2,13 @@ import React from 'react';
 import Seo from '../components/Seo.jsx';
 import Section from '../components/Section.jsx';
 import faiqPortrait from '../assets/team/faiq_raza_DP.jpeg';
+import wasimPortrait from '../assets/team/waseem_raza_DP.jpg';
 import atifPortrait from '../assets/team/atif_raza_DP.png';
 import { managingPartners, professionalStaff } from '../data/team.js';
 
 const portraits = {
   faiq: { src: faiqPortrait, width: 1066, height: 1600 },
+  wasim: { src: wasimPortrait, width: 1178, height: 1784 },
   atif: { src: atifPortrait, width: 1023, height: 1537 },
 };
 

@@ -13,6 +13,7 @@ export const managingPartners = [
     name: 'Syed Wasim Raza',
     role: 'Managing Partner',
     credentials: ['Founding Partner'],
+    portrait: 'wasim',
     biography: [
       'Syed Wasim Raza is one of the founding partners of the Firm and an Advocate of the High Courts of Pakistan. He advises individuals, corporate entities, developers, financial institutions, and investors on all property-related matters. His practice encompasses the structuring and negotiation of complex real estate transactions, due diligence, conveyancing, title verification, land acquisition, development projects, leasing arrangements, regulatory compliance, and the resolution of property disputes. Mr Wasim also advises on corporate and commercial matters, including but not limited to the incorporation of companies, trusts, and partnership firms; regulatory compliance; and intricate corporate queries.',
       'Mr.Wasim’s ability to apply meticulous legal analysis to complex commercial structures, together with his thorough understanding of Pakistan’s real estate and regulatory framework, allows him to deliver strategic, practical, and commercially sound advice tailored to safeguard clients’ interests and facilitate the successful execution of high-value transactions.',
