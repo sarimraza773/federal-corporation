@@ -58,7 +58,7 @@ export const services = [
   {
     slug: 'corporate',
     title: 'Corporate and Commercial',
-    fullTitle: 'Corporate',
+    fullTitle: 'Corporate & Commercial',
     aboutTitle: 'Corporate and Commercial',
     subtitle: 'Company Incorporation, Regulatory, and Compliance Matters',
     text: 'Corporate structuring, governance, contracts, and commercial advisory.',

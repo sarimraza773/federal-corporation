@@ -11,6 +11,9 @@ test('canonical and featured service collections begin with property and taxatio
   assert.deepEqual(services.slice(0, 2).map((service) => service.slug), REQUIRED_SERVICE_ORDER);
   assert.deepEqual(featuredServices.slice(0, 2), REQUIRED_SERVICE_ORDER);
   assert.equal(new Set(services.map((service) => service.slug)).size, services.length);
+  const corporateService = services.find((service) => service.slug === 'corporate');
+  assert.equal(corporateService.fullTitle, 'Corporate & Commercial');
+  assert.equal(corporateService.aboutTitle, 'Corporate and Commercial');
 });
 
 test('all three leaders retain the Managing Partner role and approved profile metadata', () => {
