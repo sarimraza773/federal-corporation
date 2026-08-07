@@ -50,7 +50,7 @@ export default function About() {
 
                 <div className="my-8 grid gap-3 font-serif text-lg uppercase tracking-[0.08em] text-maroon-900 sm:grid-cols-2">
                   {services.map((service) => (
-                    <span key={service.slug}>{service.fullTitle}</span>
+                    <span key={service.slug}>{service.aboutTitle || service.fullTitle}</span>
                   ))}
                 </div>
 

@@ -25,9 +25,11 @@ export const managingPartners = [
     credentials: [],
     portrait: 'atif',
     biography: [
-      "Syed Atif Raza completed his Bachelor's degree in Accounting from Lancaster University and subsequently obtained a Master's degree in Chartered Accounting from The University of Sydney. He then read law at University of London and has been enrolled as an Advocate of Subordinate Courts of Sindh.",
-      'Mr.Atif offers legal advisory and dispute resolution services across a diverse range of practice areas, including corporate and commercial law, taxation, property, trademark and intellectual property matters, and trust registration. He advises corporate entities, financial institutions and individuals on legal, regulatory, and compliance issues. His practice encompasses regulatory compliance, risk management, contractual advisory, and the resolution of contentious matters through strategic advocacy and commercially focused legal solutions.',
-      "Mr.Atif's broad educational background encompassing account, finance and law and his specialised understanding of accounting and finance allow him to proficiently advise on tax related matters, eliminating risks and ensuring compliance with the tax regime in Pakistan.",
+      'Syed Atif Raza is an Advocate of the Subordinate Courts of Sindh with a practice focused on corporate and commercial law, taxation, property, intellectual property, regulatory matters, and dispute resolution.',
+      'He holds a Bachelor’s degree in Accounting and Finance from Lancaster University, a Master’s degree in Professional Accounting from the University of Sydney, and an LLB from the University of London.',
+      'Mr. Atif advises companies, financial institutions, entrepreneurs, and private clients on corporate, commercial, regulatory, and contentious matters. His work includes contractual advisory, regulatory compliance, risk management, property and real estate matters, trademarks and intellectual property, trust registration, and dispute resolution.',
+      'His background in accounting and finance gives him particular insight into taxation and financially complex legal matters. He advises clients on Pakistan’s tax and regulatory framework with a focus on compliance, risk mitigation, and commercially practical solutions.',
+      'Combining legal, financial, and commercial expertise, Mr. Atif provides clear and strategic advice tailored to his clients’ business and regulatory needs.',
     ],
   },
 ];
