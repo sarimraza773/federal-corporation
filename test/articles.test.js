@@ -13,6 +13,7 @@ import {
   withAuthorFallback,
   withoutAuthorName,
 } from '../src/lib/articles.js';
+import { escapeHtml, isRichText, plainTextToHtml } from '../src/lib/richText.js';
 
 test('displayAuthorName trims a supplied byline', () => {
   assert.equal(displayAuthorName('  Syed Faiq Raza Rizvi  '), 'Syed Faiq Raza Rizvi');
@@ -38,6 +39,16 @@ test('date-only helpers preserve the selected calendar date', () => {
 test('createSlug creates a stable-shape URL slug for a new article', () => {
   const slug = createSlug('  A New Legal Update  ');
   assert.match(slug, /^a-new-legal-update-[a-f0-9]{8}$/);
+});
+
+test('legacy plain article text converts to safe rich-text paragraphs', () => {
+  assert.equal(isRichText('First paragraph\n\nSecond line\ncontinued'), false);
+  assert.equal(
+    plainTextToHtml('First <paragraph>\n\nSecond line\ncontinued'),
+    '<p>First &lt;paragraph&gt;</p><p>Second line<br>continued</p>',
+  );
+  assert.equal(escapeHtml('A & "B"'), 'A &amp; &quot;B&quot;');
+  assert.equal(isRichText('<p><strong>Formatted</strong></p>'), true);
 });
 
 test('legacy article reads receive the public author fallback', () => {

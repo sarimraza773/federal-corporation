@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import ArticleByline from '../../components/ArticleByline.jsx';
+import RichTextContent from '../../components/RichTextContent.jsx';
+import RichTextEditor from '../../components/RichTextEditor.jsx';
 import Seo from '../../components/Seo.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import {
@@ -8,13 +10,13 @@ import {
   DEFAULT_AUTHOR_NAME,
   LEGACY_ARTICLE_SELECT,
   articleDate,
-  bodyParagraphs,
   createSlug,
   needsAuthorNameMigration,
   todayDateValue,
   withAuthorFallback,
   withoutAuthorName,
 } from '../../lib/articles.js';
+import { normalizeArticleBody, richTextToPlainText } from '../../lib/richText.js';
 import { getThumbnailUrl, readableError, removeThumbnailIfUnreferenced, supabase } from '../../lib/supabase.js';
 import { MAX_THUMBNAIL_SIZE, THUMBNAIL_TYPES, thumbnailExtension } from '../../lib/uploads.js';
 
@@ -113,7 +115,7 @@ export default function StaffArticleEditor() {
     if (state.pending) return;
     const title = article.title.trim();
     const authorName = article.author_name.trim();
-    const body = article.body.trim();
+    const body = normalizeArticleBody(article.body);
     const publishedDate = article.published_date;
     if (!authorName) {
       setAuthorError('Enter the author name that readers should see.');
@@ -122,7 +124,7 @@ export default function StaffArticleEditor() {
       return;
     }
     setAuthorError('');
-    if (!title || !body) {
+    if (!title || !richTextToPlainText(body)) {
       setState((value) => ({ ...value, error: 'Add a title and article text before saving.', success: '' }));
       return;
     }
@@ -255,7 +257,10 @@ export default function StaffArticleEditor() {
                 <span className="mt-2 block text-xs text-ink-200/70">This date appears publicly and is saved without timezone conversion.</span>
               </label>
               <label className="mt-5 block"><span className="form-label">Short Summary <span className="font-normal normal-case tracking-normal text-ink-200/70">(optional)</span></span><textarea className="form-control" rows="3" maxLength="500" value={article.excerpt || ''} onChange={(e) => setArticle({ ...article, excerpt: e.target.value })} /></label>
-              <label className="mt-5 block"><span className="form-label">Article</span><textarea className="form-control min-h-[320px]" required value={article.body} onChange={(e) => setArticle({ ...article, body: e.target.value })} placeholder="Separate paragraphs with a blank line." /></label>
+              <div className="mt-5">
+                <span id="article-body-label" className="form-label">Article</span>
+                <RichTextEditor value={article.body} onChange={(bodyValue) => setArticle((current) => ({ ...current, body: bodyValue }))} labelledBy="article-body-label" />
+              </div>
               <fieldset className="mt-6 rounded-2xl border border-navy-900/15 p-5">
                 <legend className="px-2 text-sm font-semibold text-ink-100">Thumbnail <span className="font-normal text-ink-200/70">(optional)</span></legend>
                 <input ref={inputRef} type="file" accept=".jpg,.jpeg,.png,.webp,.gif,image/jpeg,image/png,image/webp,image/gif" onChange={chooseFile} className="mt-2 block w-full text-sm text-ink-200/80 file:mr-4 file:rounded-xl file:border-0 file:bg-navy-900 file:px-4 file:py-2 file:font-semibold file:text-white" />
@@ -288,9 +293,9 @@ export default function StaffArticleEditor() {
               />
               {article.excerpt ? <p className="mt-4 text-lg leading-relaxed text-ink-200/80">{article.excerpt}</p> : null}
               {preview ? <img src={preview} alt="" className="mt-5 aspect-[16/9] w-full rounded-xl object-cover" /> : null}
-              <div className="mt-6 space-y-5 leading-7 text-ink-200/80">
-                {bodyParagraphs(article.body).length ? bodyParagraphs(article.body).map((paragraph, index) => <p className="whitespace-pre-line" key={`${index}-${paragraph.slice(0, 20)}`}>{paragraph}</p>) : <p className="italic text-ink-200/60">Your formatted article will appear here.</p>}
-              </div>
+              {richTextToPlainText(article.body)
+                ? <RichTextContent body={article.body} className="mt-6 leading-7 text-ink-200/80" />
+                : <p className="mt-6 italic text-ink-200/60">Your formatted article will appear here.</p>}
             </aside>
           </div>
         </div>

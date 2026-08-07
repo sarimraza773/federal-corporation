@@ -443,6 +443,133 @@ a {
 
 }
 
+.rich-text-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0.65rem;
+  border-bottom: 1px solid rgba(4, 30, 66, 0.15);
+  background: rgba(246, 241, 235, 0.82);
+}
+
+.rich-text-button,
+.rich-text-select,
+.rich-text-color {
+  min-height: 2.25rem;
+  border: 1px solid rgba(4, 30, 66, 0.18);
+  border-radius: 0.55rem;
+  background: rgba(255, 255, 255, 0.75);
+  color: #041e42;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.rich-text-button {
+  padding: 0.4rem 0.65rem;
+}
+
+.rich-text-select {
+  max-width: 9rem;
+  padding: 0.35rem 0.5rem;
+}
+
+.rich-text-color {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.5rem;
+}
+
+.rich-text-color input {
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.rich-text-button:hover,
+.rich-text-button:focus-visible,
+.rich-text-select:focus-visible {
+  border-color: rgba(4, 30, 66, 0.55);
+  outline: 2px solid rgba(4, 30, 66, 0.15);
+  outline-offset: 1px;
+}
+
+.rich-text-editor {
+  min-height: 320px;
+  padding: 1rem;
+  color: #041e42;
+  outline: none;
+}
+
+.rich-text-editor:empty::before {
+  color: rgba(4, 30, 66, 0.45);
+  content: attr(data-placeholder);
+  pointer-events: none;
+}
+
+.article-rich-text > * + * {
+  margin-top: 1.25rem;
+}
+
+.article-rich-text h2,
+.article-rich-text h3,
+.article-rich-text h4 {
+  text-align: inherit;
+  color: #041e42;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.article-rich-text h2 { font-size: 1.8rem; }
+.article-rich-text h3 { font-size: 1.45rem; }
+.article-rich-text h4 { font-size: 1.2rem; }
+
+.article-rich-text ul,
+.article-rich-text ol {
+  padding-left: 1.75rem;
+}
+
+.article-rich-text ul { list-style: disc; }
+.article-rich-text ol { list-style: decimal; }
+
+.article-rich-text blockquote {
+  border-left: 4px solid rgba(74, 14, 19, 0.55);
+  padding-left: 1rem;
+  color: rgba(4, 30, 66, 0.78);
+  font-style: italic;
+}
+
+.article-rich-text a {
+  color: #4a0e13;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
+.article-rich-text table {
+  display: block;
+  width: 100%;
+  border-collapse: collapse;
+  overflow-x: auto;
+  overflow-wrap: anywhere;
+}
+
+.article-rich-text th,
+.article-rich-text td {
+  border: 1px solid rgba(4, 30, 66, 0.25);
+  padding: 0.65rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.article-rich-text th {
+  background: rgba(4, 30, 66, 0.08);
+  font-weight: 700;
+}
+
 section h2 {
   text-align: center;
 }
