@@ -4,12 +4,27 @@ import Section from '../components/Section.jsx';
 import faiqPortrait from '../assets/team/faiq_raza_DP.jpeg';
 import wasimPortrait from '../assets/team/wasim_raza_DP.jpg';
 import atifPortrait from '../assets/team/atif_raza_DP.png';
+import muhammadSadiqPortrait from '../assets/team/Muhammad_Sadiq_DP_normalized.jpeg';
+import zohaibHassanPortrait from '../assets/team/Zohaib_Hassan_DP_normalized.jpeg';
+import atifWaqasKhanPortrait from '../assets/team/Atif_Waqas_Khan_DP_normalized.jpeg';
+import muhammadImranPortrait from '../assets/team/Muhammad_Imran_DP_normalized.jpeg';
+import nadirHussainPortrait from '../assets/team/Nadir_Hussain_DP_normalized.jpeg';
+import wajahatRazaPortrait from '../assets/team/Wajahat_Raza_DP_normalized.jpeg';
 import { managingPartners, professionalStaff } from '../data/team.js';
 
 const portraits = {
   faiq: { src: faiqPortrait, width: 1066, height: 1600 },
   wasim: { src: wasimPortrait, width: 1024, height: 1536 },
   atif: { src: atifPortrait, width: 1023, height: 1537 },
+};
+
+const staffPortraits = {
+  muhammadSadiq: { src: muhammadSadiqPortrait, width: 1024, height: 1024 },
+  zohaibHassan: { src: zohaibHassanPortrait, width: 1024, height: 1024 },
+  atifWaqasKhan: { src: atifWaqasKhanPortrait, width: 1024, height: 1024 },
+  muhammadImran: { src: muhammadImranPortrait, width: 1024, height: 1024 },
+  nadirHussain: { src: nadirHussainPortrait, width: 1024, height: 1024 },
+  wajahatRaza: { src: wajahatRazaPortrait, width: 1024, height: 1024 },
 };
 
 function PartnerBadges({ credentials }) {
@@ -110,16 +125,32 @@ export default function Team() {
             </p>
           </div>
 
-          <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {professionalStaff.map((member) => (
-              <article
-                key={`${member.name}-${member.role}`}
-                className="rounded-xl border border-navy-900/10 bg-white/30 px-5 py-4 backdrop-blur-sm"
-              >
-                <h4 className="font-medium tracking-tightish text-ink-100">{member.name}</h4>
-                <p className="mt-1 text-sm text-ink-200/80">{member.role}</p>
-              </article>
-            ))}
+          <div className="mx-auto mt-8 grid max-w-6xl grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {professionalStaff.map((member) => {
+              const portrait = staffPortraits[member.portrait];
+              return (
+                <article
+                  key={`${member.name}-${member.role}`}
+                  className="overflow-hidden rounded-xl border border-navy-900/10 bg-white/30 shadow-soft backdrop-blur-sm"
+                >
+                  <div className="aspect-square overflow-hidden bg-[#d0d1d2]">
+                    <img
+                      src={portrait.src}
+                      alt={`${member.name}, ${member.role}`}
+                      width={portrait.width}
+                      height={portrait.height}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover object-center"
+                    />
+                  </div>
+                  <div className="border-t border-navy-900/10 px-5 py-4">
+                    <h4 className="font-medium tracking-tightish text-ink-100">{member.name}</h4>
+                    <p className="mt-1 text-sm text-ink-200/80">{member.role}</p>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
       </Section>
