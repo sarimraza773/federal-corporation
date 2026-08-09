@@ -62,26 +62,26 @@ export function buildVisitorConfirmationEmail({ inquiry, inquiryId, fromEmail, t
       from: fromEmail,
       to: [inquiry.email],
       reply_to: toEmail,
-      subject: 'We’ve received your message — Rizvi & Rizvi',
+      subject: 'We’ve received your message — Federal Corporation',
       html: `
         <div style="margin:0;padding:32px 16px;background:#f4f1eb;color:#1b2433;font-family:Georgia,'Times New Roman',serif;line-height:1.7">
           <div style="max-width:640px;margin:0 auto;background:#ffffff;border:1px solid #ded8cd;border-top:4px solid #8a6a2f;padding:40px;box-sizing:border-box">
-            <p style="margin:0 0 24px;font-size:13px;letter-spacing:1.8px;text-transform:uppercase;color:#8a6a2f">Rizvi &amp; Rizvi</p>
+            <p style="margin:0 0 24px;font-size:13px;letter-spacing:1.8px;text-transform:uppercase;color:#8a6a2f">FEDERAL CORPORATION</p>
             <h1 style="margin:0 0 28px;font-size:26px;font-weight:normal;color:#172033">We have received your message</h1>
             <p style="margin:0 0 18px">Dear ${escapeHtml(inquiry.name)},</p>
-            <p style="margin:0 0 18px">Thank you for contacting Rizvi &amp; Rizvi.</p>
+            <p style="margin:0 0 18px">Thank you for contacting Federal Corporation.</p>
             <p style="margin:0 0 24px">We have received your message and a member of our team will review your inquiry. We typically respond within 24 hours.</p>
             <p style="margin:0 0 12px">For your records, a copy of the message you submitted is included below:</p>
             <p style="margin:0 0 8px;font-family:Arial,sans-serif;font-size:14px;font-weight:bold;color:#172033">Your Message</p>
             <div style="margin:0 0 28px;padding:18px 20px;background:#f8f7f4;border-left:3px solid #8a6a2f;color:#303949;font-family:Arial,sans-serif;font-size:15px;line-height:1.65">${escapeHtml(inquiry.message).replace(/\n/g, '<br>')}</div>
-            <p style="margin:0">Kind regards,<br><strong>Rizvi &amp; Rizvi</strong><br>Advocates &amp; Legal Practitioners</p>
+            <p style="margin:0">Kind regards,<br><strong>Federal Corporation</strong><br>Advocates &amp; Legal Practitioners</p>
             <p style="margin:32px 0 0;padding-top:18px;border-top:1px solid #e5e0d7;color:#6d7480;font-family:Arial,sans-serif;font-size:12px">This is an automated confirmation of your website inquiry.</p>
           </div>
         </div>`,
       text: [
         `Dear ${inquiry.name},`,
         '',
-        'Thank you for contacting Rizvi & Rizvi.',
+        'Thank you for contacting Federal Corporation.',
         '',
         'We have received your message and a member of our team will review your inquiry. We typically respond within 24 hours.',
         '',
@@ -93,7 +93,7 @@ export function buildVisitorConfirmationEmail({ inquiry, inquiryId, fromEmail, t
         '',
         'Kind regards,',
         '',
-        'Rizvi & Rizvi',
+        'Federal Corporation',
         'Advocates & Legal Practitioners',
         '',
         'This is an automated confirmation of your website inquiry.',

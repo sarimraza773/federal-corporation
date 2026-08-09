@@ -97,7 +97,14 @@ test('firm and visitor Reply-To behavior is correct', () => {
   assert.equal(visitorEmail.payload.from, config.fromEmail);
   assert.deepEqual(visitorEmail.payload.to, [inquiry.email]);
   assert.equal(visitorEmail.payload.reply_to, config.toEmail);
-  assert.equal(visitorEmail.payload.subject, 'We’ve received your message — Rizvi & Rizvi');
+  assert.equal(visitorEmail.payload.subject, 'We’ve received your message — Federal Corporation');
+  assert.match(visitorEmail.payload.html, />FEDERAL CORPORATION<\/p>/);
+  assert.match(visitorEmail.payload.html, /Thank you for contacting Federal Corporation\./);
+  assert.match(visitorEmail.payload.html, /<strong>Federal Corporation<\/strong>/);
+  assert.match(visitorEmail.payload.text, /Thank you for contacting Federal Corporation\./);
+  assert.match(visitorEmail.payload.text, /Kind regards,\n\nFederal Corporation/);
+  assert.doesNotMatch(visitorEmail.payload.html, /Rizvi &amp; Rizvi/);
+  assert.doesNotMatch(visitorEmail.payload.text, /Rizvi & Rizvi/);
 });
 
 test('visitor message is present as text and HTML-escaped with line breaks preserved', () => {
