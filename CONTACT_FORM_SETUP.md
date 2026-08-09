@@ -1,6 +1,6 @@
 # Contact form setup
 
-The static React site calls the public `send-contact-email` Supabase Edge Function. The function validates the request, stores it privately in PostgreSQL, then asks Resend to send a notification. A stored inquiry is treated as received even if the notification fails; check `notification_status` for `failed` rows.
+The static React site calls the public `send-contact-email` Supabase Edge Function. The function validates the request, stores it privately in PostgreSQL, then asks Resend to send the firm notification and, when enabled, a visitor confirmation. A stored inquiry is treated as received even if either email fails; check `notification_status` and `confirmation_status` for delivery results.
 
 ## 1. Apply the Supabase SQL
 
@@ -11,6 +11,14 @@ supabase/migrations/202608090001_contact_inquiries.sql
 ```
 
 and run it against the same project already used by the News system. The migration creates `contact_inquiries`, its constraints/indexes, RLS with no browser policies, and the service-role-only `accept_contact_inquiry` rate-limit/insert function. It does not change News or authentication tables.
+
+Then run the separate visitor-confirmation tracking migration:
+
+```text
+supabase/migrations/202608090002_add_contact_confirmation_tracking.sql
+```
+
+It alters the existing table by adding `confirmation_status` (default `pending`) and `confirmation_sent_at`; it does not recreate the table.
 
 If this repository is fully migration-managed and all earlier migrations are already applied remotely, the alternative is:
 
@@ -38,10 +46,11 @@ Install the [Supabase CLI](https://supabase.com/docs/guides/local-development/cl
 supabase login
 supabase link --project-ref YOUR_PROJECT_REF
 supabase secrets set RESEND_API_KEY=YOUR_RESEND_API_KEY
-supabase secrets set CONTACT_TO_EMAIL=YOUR_CONFIRMED_DESTINATION_EMAIL
-supabase secrets set CONTACT_FROM_EMAIL="Rizvi & Rizvi Website <website@YOUR_VERIFIED_DOMAIN>"
-supabase secrets set ALLOWED_ORIGINS="http://localhost:5173,http://127.0.0.1:5173,https://federalcorporation.com.pk"
+supabase secrets set CONTACT_TO_EMAIL=federalcorporation1@gmail.com
+supabase secrets set CONTACT_FROM_EMAIL="Rizvi & Rizvi <inquiries@federalcorporation.com.pk>"
+supabase secrets set ALLOWED_ORIGINS="http://localhost:5173,http://127.0.0.1:5173,https://sarimraza773.github.io,https://federalcorporation.com.pk,https://www.federalcorporation.com.pk"
 supabase secrets set RATE_LIMIT_SALT=YOUR_RANDOM_SECRET_AT_LEAST_32_BYTES
+supabase secrets set ENABLE_VISITOR_CONFIRMATION=true
 supabase functions deploy send-contact-email
 ```
 
@@ -78,6 +87,7 @@ CONTACT_TO_EMAIL=YOUR_RESEND_ACCOUNT_EMAIL
 CONTACT_FROM_EMAIL=Rizvi & Rizvi Website <onboarding@resend.dev>
 ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
 RATE_LIMIT_SALT=YOUR_LOCAL_RANDOM_SECRET_AT_LEAST_32_BYTES
+ENABLE_VISITOR_CONFIRMATION=true
 ```
 
 Set the root ignored `.env.local` to the local API URL and publishable/anon key printed by `supabase status`:
@@ -91,11 +101,12 @@ Restart Vite after changing frontend environment variables. If you instead test 
 
 ### Test checklist
 
-- **Success:** submit valid name/email/message; confirm the inline success text, cleared fields, no navigation, one database row, and one Resend delivery.
+- **Success:** submit valid name/email/message; confirm the inline success text, cleared fields, no navigation, one database row, the firm notification, and (when enabled) the visitor confirmation.
 - **Invalid input:** try an invalid email, blank message, one-character name, and message under 10 characters; confirm inline field errors and no network submission.
 - **Honeypot:** in browser developer tools set the hidden `companyWebsite` input to a value and submit; the response is intentionally successful but no row/email is created.
 - **Rate limit/duplicates:** submit again within 60 seconds, or more than three accepted inquiries within 15 minutes from the same client; confirm a failed UI status and no duplicate row.
-- **Resend failure:** temporarily use an invalid test API key or sender, submit once, then restore the secret. Confirm the row exists with `notification_status = 'failed'` and the visitor still sees success because the inquiry was received.
+- **Resend failure:** temporarily use an invalid test API key or sender, submit once, then restore the secret. Confirm the row exists with failed email status and the visitor still sees success because the inquiry was received.
+- **Confirmation flag:** set `ENABLE_VISITOR_CONFIRMATION=false`, redeploy, and submit once. Confirm the firm email is delivered while `confirmation_status` remains `pending`; restore the flag to `true` and redeploy.
 - **Database failure:** test only in a disposable/local environment by stopping local Supabase or removing the migration; confirm the visitor sees the generic failure and no success is claimed.
 - **CORS:** temporarily use an unlisted frontend origin; confirm the preflight/request is rejected, then restore the allowlist.
 - **Mobile/accessibility:** test narrow and wide viewports, keyboard-only navigation, focus/error association, the disabled `Sending...` button, and screen-reader announcement of status.
@@ -103,7 +114,7 @@ Restart Vite after changing frontend environment variables. If you instead test 
 Inspect stored rows in the Dashboard Table Editor or with SQL (service/admin context only):
 
 ```sql
-select id, name, email, status, notification_status, created_at
+select id, name, email, status, notification_status, confirmation_status, confirmation_sent_at, created_at
 from public.contact_inquiries
 order by created_at desc;
 ```
