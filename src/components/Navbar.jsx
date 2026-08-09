@@ -57,7 +57,7 @@ export default function Navbar() {
             </span>
           </div>
           <span className="mt-1 max-w-[10.5rem] text-[7px] font-medium uppercase leading-tight tracking-[0.06em] text-white/70 min-[380px]:text-[8px] sm:max-w-none sm:whitespace-nowrap sm:text-[10px] sm:tracking-[0.12em]">
-            Advocate &amp; Legal Practitioners
+            Advocates &amp; Legal Practitioners
           </span>
         </div>
 

@@ -86,8 +86,8 @@ export const services = [
   },
   {
     slug: 'competition-law',
-    title: 'Competition Law',
-    fullTitle: 'Competition Law (Antitrust & Monopolies)',
+    title: 'Competition & Antitrust Law',
+    fullTitle: 'Competition & Antitrust Law',
     subtitle: 'Competition-facing issues',
     text: 'Guidance on antitrust/competition concerns and related advisory needs.',
     summary:

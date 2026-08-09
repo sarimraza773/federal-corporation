@@ -11,7 +11,7 @@ const primaryContacts = [
   {
     label: 'Email',
     icon: Mail,
-    items: [{ text: 'federalcorporation@hotmail.com', href: 'mailto:federalcorporation@hotmail.com' }],
+    items: [{ text: 'federalcoporation1@gmail.com', href: 'mailto:federalcoporation1@gmail.com' }],
   },
   {
     label: 'Tel',

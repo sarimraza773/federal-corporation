@@ -32,8 +32,9 @@ const heroServices = [
   { label: 'Corporate & Commercial', to: '/services/corporate' },
   { label: 'Intellectual Property', to: '/services/intellectual-property' },
   { label: 'Anti Money Laundering & Anti Benami', to: '/services/anti-money-laundering' },
-  { label: 'Competition/Antitrust Law', to: '/services/competition-law' },
-  { label: 'Other Services', to: '/services', fullWidth: true },
+  { label: 'Competition & Antitrust Law', to: '/services/competition-law' },
+  { label: 'Non-Profit Organisations', to: '/services/non-profit-organisations' },
+  { label: 'All Services', to: '/services', wide: true },
 ];
 
 function Dot({ active, onClick }) {
@@ -133,7 +134,7 @@ export default function HeroCarousel({ slides = slidesBase }) {
                       <Link
                         key={service.to}
                         to={service.to}
-                        className={`rounded-xl border border-navy-900/10 bg-white/25 px-3 py-2 text-xs font-medium leading-snug text-ink-100 transition-colors hover:bg-white/45 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy-900 ${service.fullWidth ? 'sm:col-span-2 lg:col-span-3' : ''}`}
+                        className={`min-w-0 break-words rounded-xl border border-navy-900/10 bg-white/25 px-3 py-2 text-xs font-medium leading-snug text-ink-100 transition-colors hover:bg-white/45 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy-900 ${service.wide ? 'lg:col-span-2' : ''}`}
                       >
                         {service.label}
                       </Link>

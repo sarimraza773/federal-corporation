@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const mailto = {
-  to: 'federalcorporation@hotmail.com',
+  to: 'federalcorporation1@gmail.com',
   subject: encodeURIComponent('Website Inquiry - Federal Corporation'),
 };
 

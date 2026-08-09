@@ -14,6 +14,8 @@ test('canonical and featured service collections begin with property and taxatio
   const corporateService = services.find((service) => service.slug === 'corporate');
   assert.equal(corporateService.fullTitle, 'Corporate & Commercial');
   assert.equal(corporateService.aboutTitle, 'Corporate and Commercial');
+  const competitionService = services.find((service) => service.slug === 'competition-law');
+  assert.equal(competitionService.fullTitle, 'Competition & Antitrust Law');
 });
 
 test('all three leaders retain the Managing Partner role and approved profile metadata', () => {
