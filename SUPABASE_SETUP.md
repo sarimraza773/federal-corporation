@@ -1,6 +1,6 @@
 # News publishing setup
 
-The website remains a React/Vite single-page app hosted at `/rizvi-rizvi/`. Supabase supplies authentication, article data, and private thumbnail storage.
+The website remains a React/Vite single-page app hosted from the root of `https://federalcorporation.com.pk/`. Supabase supplies authentication, article data, and private thumbnail storage.
 
 ## 1. Create and configure Supabase
 
@@ -25,8 +25,8 @@ The website remains a React/Vite single-page app hosted at `/rizvi-rizvi/`. Supa
 
 6. In Authentication > URL Configuration, set:
 
-   - Production Site URL: `https://sarimraza773.github.io/rizvi-rizvi/`
-   - Production redirect URL: `https://sarimraza773.github.io/rizvi-rizvi/**`
+   - Production Site URL: `https://federalcorporation.com.pk/`
+   - Production redirect URL: `https://federalcorporation.com.pk/**`
    - Local redirect URL: `http://localhost:5173/**`
 
 The migration creates the private thumbnail bucket automatically. Images are delivered through short-lived signed URLs only after storage RLS permits access.
@@ -56,7 +56,7 @@ In GitHub repository Settings > Secrets and variables > Actions > Variables, add
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_PUBLISHABLE_KEY`
 
-The deployment workflow passes these public browser values to Vite without printing them and keeps `BASE_PATH: /rizvi-rizvi/`. The existing `404.html` redirect/restore scripts preserve direct-route refresh behavior.
+The deployment workflow passes these public browser values to Vite without printing them and builds with `BASE_PATH: /`. The existing `404.html` redirect/restore scripts preserve direct-route refresh behavior.
 
 The project URL and publishable key are designed for browser use. Security comes from grants, database RLS, and storage policies. Never add a password or Supabase `service_role` key to `.env` Vite variables, source code, documentation, GitHub Pages, or built assets: every `VITE_` value is shipped to visitors.
 

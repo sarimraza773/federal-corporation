@@ -1,57 +1,70 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { contactLimits, validateContactInput } from '../lib/contact.js';
+import { supabase } from '../lib/supabase.js';
 
-const mailto = {
-  to: 'federalcorporation1@gmail.com',
-  subject: encodeURIComponent('Website Inquiry - Federal Corporation'),
-};
-
-const limits = {
-  name: 100,
-  email: 254,
-  message: 1800,
-};
-
-function isValidEmail(value) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-}
+const successMessage = 'Thank you. Your message has been sent successfully. A member of our team will get back to you shortly.';
+const failureMessage = 'We were unable to send your message. Please try again or contact us directly by email.';
 
 export default function ContactForm() {
   const [status, setStatus] = useState({ type: 'idle', msg: '' });
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [isSending, setIsSending] = useState(false);
+  const submissionLock = useRef(false);
 
-  function onSubmit(e) {
+  async function onSubmit(e) {
     e.preventDefault();
-    const fd = new FormData(e.currentTarget);
-    const name = (fd.get('name') || '').toString().trim();
-    const email = (fd.get('email') || '').toString().trim();
-    const message = (fd.get('message') || '').toString().trim();
+    if (submissionLock.current) return;
 
-    if (!name || !email || !message) {
-      setStatus({ type: 'error', msg: 'Please fill out all fields.' });
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const { values, errors } = validateContactInput({
+      name: formData.get('name'),
+      email: formData.get('email'),
+      message: formData.get('message'),
+    });
+
+    setFieldErrors(errors);
+    if (Object.keys(errors).length > 0) {
+      setStatus({ type: 'error', msg: 'Please correct the highlighted fields and try again.' });
+      form.elements.namedItem(Object.keys(errors)[0])?.focus();
       return;
     }
 
-    if (name.length > limits.name || email.length > limits.email || message.length > limits.message) {
-      setStatus({ type: 'error', msg: 'Please shorten your inquiry and try again.' });
+    if (!supabase) {
+      setStatus({ type: 'error', msg: failureMessage });
       return;
     }
 
-    if (!isValidEmail(email)) {
-      setStatus({ type: 'error', msg: 'Please enter a valid email address.' });
-      return;
+    submissionLock.current = true;
+    setIsSending(true);
+    setStatus({ type: 'idle', msg: '' });
+
+    try {
+      const { data, error } = await supabase.functions.invoke('send-contact-email', {
+        body: {
+          ...values,
+          companyWebsite: String(formData.get('companyWebsite') || ''),
+        },
+      });
+
+      if (error || data?.success !== true) throw error || new Error('Contact submission failed');
+
+      form.reset();
+      setFieldErrors({});
+      setStatus({ type: 'ok', msg: successMessage });
+    } catch {
+      setStatus({ type: 'error', msg: failureMessage });
+    } finally {
+      submissionLock.current = false;
+      setIsSending(false);
     }
-
-    const body = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}\n`,
-    );
-
-    window.location.href = `mailto:${mailto.to}?subject=${mailto.subject}&body=${body}`;
-    setStatus({ type: 'ok', msg: 'Opening your email client...' });
-    e.currentTarget.reset();
   }
 
   return (
     <form
       onSubmit={onSubmit}
+      noValidate
+      aria-busy={isSending}
       className="rounded-3xl border border-navy-900/15 bg-white/45 p-6 shadow-soft backdrop-blur-sm sm:p-8"
     >
       <div>
@@ -67,51 +80,79 @@ export default function ContactForm() {
         <label className="block">
           <span className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-200/80">Name</span>
           <input
+            id="contact-name"
             name="name"
-            maxLength={limits.name}
+            minLength={contactLimits.name.min}
+            maxLength={contactLimits.name.max}
             required
             autoComplete="name"
+            aria-invalid={Boolean(fieldErrors.name)}
+            aria-describedby={fieldErrors.name ? 'contact-name-error' : undefined}
             className="mt-2 w-full rounded-2xl border border-navy-900/15 bg-white/65 px-4 py-3 text-ink-100 outline-none transition-colors focus:border-navy-900/35"
             placeholder="Your full name"
           />
+          {fieldErrors.name ? <span id="contact-name-error" className="mt-1 block text-xs text-red-700">{fieldErrors.name}</span> : null}
         </label>
 
         <label className="block">
           <span className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-200/80">Email</span>
           <input
+            id="contact-email"
             name="email"
             type="email"
-            maxLength={limits.email}
+            maxLength={contactLimits.email.max}
             required
             autoComplete="email"
+            aria-invalid={Boolean(fieldErrors.email)}
+            aria-describedby={fieldErrors.email ? 'contact-email-error' : undefined}
             className="mt-2 w-full rounded-2xl border border-navy-900/15 bg-white/65 px-4 py-3 text-ink-100 outline-none transition-colors focus:border-navy-900/35"
             placeholder="you@example.com"
           />
+          {fieldErrors.email ? <span id="contact-email-error" className="mt-1 block text-xs text-red-700">{fieldErrors.email}</span> : null}
         </label>
       </div>
 
       <label className="block mt-4">
         <span className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-200/80">Message</span>
         <textarea
+          id="contact-message"
           name="message"
           rows={6}
-          maxLength={limits.message}
+          minLength={contactLimits.message.min}
+          maxLength={contactLimits.message.max}
           required
+          aria-invalid={Boolean(fieldErrors.message)}
+          aria-describedby={fieldErrors.message ? 'contact-message-error' : undefined}
           className="mt-2 w-full rounded-2xl border border-navy-900/15 bg-white/65 px-4 py-3 text-ink-100 outline-none transition-colors focus:border-navy-900/35"
           placeholder="How can we help?"
         />
+        {fieldErrors.message ? <span id="contact-message-error" className="mt-1 block text-xs text-red-700">{fieldErrors.message}</span> : null}
       </label>
+
+      <div hidden aria-hidden="true">
+        <label htmlFor="contact-company-website">Company website</label>
+        <input
+          id="contact-company-website"
+          name="companyWebsite"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
 
       <div className="mt-5 flex flex-wrap items-center gap-3">
         <button
           type="submit"
-          className="rounded-2xl bg-navy-900 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-navy-800"
+          disabled={isSending}
+          className="rounded-2xl bg-navy-900 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-navy-800 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          Send Message
+          {isSending ? 'Sending...' : 'Send Message'}
         </button>
 
         {status.type !== 'idle' ? (
           <p
+            role={status.type === 'error' ? 'alert' : 'status'}
+            aria-live="polite"
             className={`text-sm ${status.type === 'error' ? 'text-red-700' : 'text-ink-200/80'}`}
           >
             {status.msg}
