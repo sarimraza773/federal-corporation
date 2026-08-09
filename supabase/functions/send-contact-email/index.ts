@@ -104,6 +104,10 @@ function safeConfigValue(name: string): string | null {
   return value && !/[\r\n]/.test(value) ? value : null;
 }
 
+function visitorConfirmationEnabled(): boolean {
+  return Deno.env.get('ENABLE_VISITOR_CONFIRMATION')?.trim() === 'true';
+}
+
 Deno.serve(async (request) => {
   const origin = request.headers.get('Origin');
   const originAllowed = !origin || configuredOrigins().has(origin);
@@ -256,20 +260,126 @@ Deno.serve(async (request) => {
       }
     }
 
-    const { error: notificationUpdateError } = await supabaseAdmin
-      .from('contact_inquiries')
-      .update({ notification_status: notificationSent ? 'sent' : 'failed' })
-      .eq('id', inquiryId);
+    try {
+      const { error: notificationUpdateError } = await supabaseAdmin
+        .from('contact_inquiries')
+        .update({ notification_status: notificationSent ? 'sent' : 'failed' })
+        .eq('id', inquiryId);
 
-    if (notificationUpdateError) {
-      console.error('Unable to update contact notification status', {
+      if (notificationUpdateError) {
+        console.error('Unable to update contact notification status', {
+          inquiryId,
+          code: notificationUpdateError.code,
+        });
+      }
+    } catch (error) {
+      console.error('Contact notification status update failed', {
         inquiryId,
-        code: notificationUpdateError.code,
+        error: error instanceof Error ? error.name : 'unknown',
       });
     }
 
+    if (visitorConfirmationEnabled()) {
+      let confirmationSent = false;
+      let confirmationSentAt: string | null = null;
+
+      if (!resendApiKey || !toEmail || !fromEmail) {
+        console.error('Visitor confirmation email is missing required server configuration', { inquiryId });
+      } else {
+        const escapedMessage = escapeHtml(inquiry.message).replace(/\n/g, '<br>');
+        const confirmationText = [
+          `Dear ${inquiry.name},`,
+          '',
+          'Thank you for contacting Rizvi & Rizvi.',
+          '',
+          'We have received your message and a member of our team will review your inquiry. We typically respond within 24 hours.',
+          '',
+          'For your records, a copy of the message you submitted is included below:',
+          '',
+          inquiry.message,
+          '',
+          'Kind regards,',
+          'Rizvi & Rizvi',
+          'Advocates & Legal Practitioners',
+          '',
+          'This is an automated confirmation of your website inquiry.',
+        ].join('\n');
+        const confirmationHtml = `
+          <div style="margin:0;padding:32px 16px;background:#f4f1eb;color:#1b2433;font-family:Georgia,'Times New Roman',serif;line-height:1.7">
+            <div style="max-width:640px;margin:0 auto;background:#ffffff;border:1px solid #ded8cd;border-top:4px solid #8a6a2f;padding:40px;box-sizing:border-box">
+              <p style="margin:0 0 24px;font-size:13px;letter-spacing:1.8px;text-transform:uppercase;color:#8a6a2f">Rizvi &amp; Rizvi</p>
+              <h1 style="margin:0 0 28px;font-size:26px;font-weight:normal;color:#172033">We have received your message</h1>
+              <p style="margin:0 0 18px">Dear ${escapeHtml(inquiry.name)},</p>
+              <p style="margin:0 0 18px">Thank you for contacting Rizvi &amp; Rizvi.</p>
+              <p style="margin:0 0 24px">We have received your message and a member of our team will review your inquiry. We typically respond within 24 hours.</p>
+              <p style="margin:0 0 12px">For your records, a copy of the message you submitted is included below:</p>
+              <div style="margin:0 0 28px;padding:18px 20px;background:#f8f7f4;border-left:3px solid #8a6a2f;color:#303949;font-family:Arial,sans-serif;font-size:15px;line-height:1.65">${escapedMessage}</div>
+              <p style="margin:0">Kind regards,<br><strong>Rizvi &amp; Rizvi</strong><br>Advocates &amp; Legal Practitioners</p>
+              <p style="margin:32px 0 0;padding-top:18px;border-top:1px solid #e5e0d7;color:#6d7480;font-family:Arial,sans-serif;font-size:12px">This is an automated confirmation of your website inquiry.</p>
+            </div>
+          </div>`;
+
+        try {
+          const resendResponse = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${resendApiKey}`,
+              'Content-Type': 'application/json',
+              'Idempotency-Key': `contact-inquiry-confirmation-${inquiryId}`,
+            },
+            body: JSON.stringify({
+              from: fromEmail,
+              to: [inquiry.email],
+              reply_to: toEmail,
+              subject: 'We’ve received your message — Rizvi & Rizvi',
+              html: confirmationHtml,
+              text: confirmationText,
+            }),
+            signal: AbortSignal.timeout(10_000),
+          });
+
+          confirmationSent = resendResponse.ok;
+          if (confirmationSent) {
+            confirmationSentAt = new Date().toISOString();
+          } else {
+            console.error('Resend visitor confirmation failed', {
+              inquiryId,
+              status: resendResponse.status,
+            });
+          }
+        } catch (error) {
+          console.error('Resend visitor confirmation request failed', {
+            inquiryId,
+            error: error instanceof Error ? error.name : 'unknown',
+          });
+        }
+      }
+
+      try {
+        const { error: confirmationUpdateError } = await supabaseAdmin
+          .from('contact_inquiries')
+          .update({
+            confirmation_status: confirmationSent ? 'sent' : 'failed',
+            confirmation_sent_at: confirmationSentAt,
+          })
+          .eq('id', inquiryId);
+
+        if (confirmationUpdateError) {
+          console.error('Unable to update visitor confirmation status', {
+            inquiryId,
+            code: confirmationUpdateError.code,
+          });
+        }
+      } catch (error) {
+        console.error('Visitor confirmation status update failed', {
+          inquiryId,
+          error: error instanceof Error ? error.name : 'unknown',
+        });
+      }
+    }
+
     // Once the database insert succeeds, the inquiry is safely received even
-    // if Resend is temporarily unavailable; the failed status supports follow-up.
+    // if either Resend email is temporarily unavailable; failed statuses support follow-up.
     return jsonResponse({ success: true }, 200, cors);
   } catch (error) {
     console.error('Unexpected contact function failure', {
