@@ -6,11 +6,11 @@ import vm from 'node:vm';
 const redirectSource = await readFile(new URL('../public/redirect-to-root.js', import.meta.url), 'utf8');
 const restoreSource = await readFile(new URL('../public/restore-redirect.js', import.meta.url), 'utf8');
 
-test('GitHub Pages fallback stores the complete requested URL and redirects to the domain root', () => {
+test('GitHub Pages fallback stores the complete requested URL and redirects to the project root', () => {
   const stored = new Map();
   let replacement;
   const location = {
-    href: 'https://federalcorporation.com.pk/news/article-slug?preview=1#details',
+    href: 'https://sarimraza773.github.io/federal-corporation/news/article-slug?preview=1#details',
     replace(value) { replacement = value; },
   };
 
@@ -20,17 +20,17 @@ test('GitHub Pages fallback stores the complete requested URL and redirects to t
   });
 
   assert.equal(stored.get('redirect'), location.href);
-  assert.equal(replacement, '/');
+  assert.equal(replacement, '/federal-corporation/');
 });
 
-test('root deployment restores direct routes with query parameters and hashes', () => {
-  const requestedUrl = 'https://federalcorporation.com.pk/news/article-slug?preview=1#details';
+test('project deployment restores direct routes with query parameters and hashes', () => {
+  const requestedUrl = 'https://sarimraza773.github.io/federal-corporation/news/article-slug?preview=1#details';
   const stored = new Map([['redirect', requestedUrl]]);
   let restoredPath;
 
   vm.runInNewContext(restoreSource, {
     URL,
-    location: { href: 'https://federalcorporation.com.pk/', origin: 'https://federalcorporation.com.pk' },
+    location: { href: 'https://sarimraza773.github.io/federal-corporation/', origin: 'https://sarimraza773.github.io' },
     history: { replaceState: (_state, _title, value) => { restoredPath = value; } },
     sessionStorage: {
       getItem: (key) => stored.get(key) || null,
@@ -38,7 +38,7 @@ test('root deployment restores direct routes with query parameters and hashes', 
     },
   });
 
-  assert.equal(restoredPath, '/news/article-slug?preview=1#details');
+  assert.equal(restoredPath, '/federal-corporation/news/article-slug?preview=1#details');
   assert.equal(stored.has('redirect'), false);
 });
 

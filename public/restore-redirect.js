@@ -7,6 +7,7 @@
 
     var url = new URL(redirect);
     if (url.origin !== location.origin) return;
+    if (url.pathname !== '/federal-corporation' && !url.pathname.startsWith('/federal-corporation/')) return;
 
     history.replaceState(null, '', url.pathname + url.search + url.hash);
   } catch (_) {

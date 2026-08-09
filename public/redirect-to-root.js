@@ -5,5 +5,5 @@
     // Continue even when session storage is unavailable.
   }
 
-  location.replace('/');
+  location.replace('/federal-corporation/');
 })();
