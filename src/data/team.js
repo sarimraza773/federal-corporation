@@ -38,7 +38,7 @@ export const professionalStaff = [
   { name: 'Muhammad Sadiq', role: 'Manager Administration', portrait: 'muhammadSadiq' },
   { name: 'Zohaib Hassan', role: 'Manager Operations', portrait: 'zohaibHassan' },
   { name: 'Atif Waqas Khan', role: 'Manager Taxation', portrait: 'atifWaqasKhan' },
-  { name: 'Muhammad Imran', role: 'Head of Registration', portrait: 'muhammadImran' },
-  { name: 'Nadir Hussain', role: 'Manager Registration', portrait: 'nadirHussain' },
+  { name: 'Muhammad Imran', role: 'Lead Associate', portrait: 'muhammadImran' },
+  { name: 'Nadir Hussain', role: 'Manager', portrait: 'nadirHussain' },
   { name: 'Wajahat Raza', role: 'Manager', portrait: 'wajahatRaza' },
 ];
