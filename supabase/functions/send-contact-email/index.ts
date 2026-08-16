@@ -9,13 +9,16 @@ const LIMITS = {
   nameMin: 2,
   nameMax: 100,
   emailMax: 254,
+  contactNumberMin: 7,
+  contactNumberMax: 30,
   messageMin: 10,
   messageMax: 1800,
   userAgentMax: 500,
 };
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const allowedKeys = new Set(['name', 'email', 'message', 'companyWebsite', 'turnstileToken']);
+const contactNumberPattern = /^\+?[0-9][0-9\s().-]*$/;
+const allowedKeys = new Set(['name', 'email', 'contactNumber', 'message', 'companyWebsite', 'turnstileToken']);
 
 type JsonRecord = Record<string, unknown>;
 
@@ -71,13 +74,20 @@ function parseAndValidate(payload: unknown) {
 
   const name = cleanSingleLine(payload.name);
   const email = cleanSingleLine(payload.email)?.toLowerCase() || null;
+  const contactNumber = cleanSingleLine(payload.contactNumber);
   const message = cleanMessage(payload.message);
 
   if (!name || name.length < LIMITS.nameMin || name.length > LIMITS.nameMax) return null;
   if (!email || email.length > LIMITS.emailMax || !emailPattern.test(email)) return null;
+  if (
+    !contactNumber
+    || contactNumber.length < LIMITS.contactNumberMin
+    || contactNumber.length > LIMITS.contactNumberMax
+    || !contactNumberPattern.test(contactNumber)
+  ) return null;
   if (!message || message.length < LIMITS.messageMin || message.length > LIMITS.messageMax) return null;
 
-  return { name, email, message };
+  return { name, email, contactNumber, message };
 }
 
 function clientAddress(request: Request): string {
@@ -172,6 +182,7 @@ Deno.serve(async (request) => {
     const { data: inquiryId, error: insertError } = await supabaseAdmin.rpc('accept_contact_inquiry', {
       p_name: inquiry.name,
       p_email: inquiry.email,
+      p_contact_number: inquiry.contactNumber,
       p_message: inquiry.message,
       p_user_agent: userAgent,
       p_client_hash: clientHash,

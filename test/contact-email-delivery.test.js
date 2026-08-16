@@ -11,6 +11,7 @@ import {
 const inquiry = {
   name: 'Ayesha & Co',
   email: 'ayesha@example.com',
+  contactNumber: '+92 300 1234567',
   message: '<script>alert("x")</script>\nSecond line & more',
 };
 
@@ -98,6 +99,8 @@ test('firm and visitor Reply-To behavior is correct', () => {
   assert.deepEqual(visitorEmail.payload.to, [inquiry.email]);
   assert.equal(visitorEmail.payload.reply_to, config.toEmail);
   assert.equal(visitorEmail.payload.subject, 'We’ve received your message — Federal Corporation');
+  assert.match(firmEmail.payload.html, /Contact Number:<\/strong><br>\+92 300 1234567/);
+  assert.match(firmEmail.payload.text, /Contact Number:\n\+92 300 1234567/);
   assert.match(visitorEmail.payload.html, />FEDERAL CORPORATION<\/p>/);
   assert.match(visitorEmail.payload.html, /Thank you for contacting Federal Corporation\./);
   assert.match(visitorEmail.payload.html, /<strong>Federal Corporation<\/strong>/);

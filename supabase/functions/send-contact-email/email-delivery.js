@@ -33,6 +33,7 @@ export function buildInternalEmail({ inquiry, inquiryId, fromEmail, toEmail, sub
           <h1 style="font-size:22px;margin:0 0 24px">New Website Inquiry</h1>
           <p><strong>Name:</strong><br>${escapeHtml(inquiry.name)}</p>
           <p><strong>Email:</strong><br>${escapeHtml(inquiry.email)}</p>
+          <p><strong>Contact Number:</strong><br>${escapeHtml(inquiry.contactNumber)}</p>
           <p><strong>Message:</strong><br>${escapeHtml(inquiry.message).replace(/\n/g, '<br>')}</p>
           <p><strong>Submitted:</strong><br>${escapeHtml(submitted)}</p>
         </div>`,
@@ -44,6 +45,9 @@ export function buildInternalEmail({ inquiry, inquiryId, fromEmail, toEmail, sub
         '',
         'Email:',
         inquiry.email,
+        '',
+        'Contact Number:',
+        inquiry.contactNumber,
         '',
         'Message:',
         inquiry.message,

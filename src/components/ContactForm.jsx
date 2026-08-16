@@ -20,6 +20,7 @@ export default function ContactForm() {
     const { values, errors } = validateContactInput({
       name: formData.get('name'),
       email: formData.get('email'),
+      contactNumber: formData.get('contactNumber'),
       message: formData.get('message'),
     });
 
@@ -111,6 +112,24 @@ export default function ContactForm() {
           {fieldErrors.email ? <span id="contact-email-error" className="mt-1 block text-xs text-red-700">{fieldErrors.email}</span> : null}
         </label>
       </div>
+
+      <label className="block mt-4">
+        <span className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-200/80">Contact Number</span>
+        <input
+          id="contact-number"
+          name="contactNumber"
+          type="tel"
+          minLength={contactLimits.contactNumber.min}
+          maxLength={contactLimits.contactNumber.max}
+          required
+          autoComplete="tel"
+          aria-invalid={Boolean(fieldErrors.contactNumber)}
+          aria-describedby={fieldErrors.contactNumber ? 'contact-number-error' : undefined}
+          className="mt-2 w-full rounded-2xl border border-navy-900/15 bg-white/65 px-4 py-3 text-ink-100 outline-none transition-colors focus:border-navy-900/35"
+          placeholder="Your contact number"
+        />
+        {fieldErrors.contactNumber ? <span id="contact-number-error" className="mt-1 block text-xs text-red-700">{fieldErrors.contactNumber}</span> : null}
+      </label>
 
       <label className="block mt-4">
         <span className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-200/80">Message</span>

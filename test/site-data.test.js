@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { managingPartners } from '../src/data/team.js';
+import { associates, managingPartners, professionalStaff } from '../src/data/team.js';
 import { featuredServices, services } from '../src/data/services.js';
 import { safeStaffRedirect } from '../src/lib/navigation.js';
 import { thumbnailExtension } from '../src/lib/uploads.js';
@@ -31,6 +31,17 @@ test('all three leaders retain the Managing Partner role and approved profile me
   assert.deepEqual(managingPartners[1].credentials, ['Founding Partner']);
   assert.equal(managingPartners[0].biography.length, 2);
   assert.equal(managingPartners[1].biography.length, 2);
+});
+
+test('Muhammad Imran is the sole Senior Associate and professional staff retains five members', () => {
+  assert.deepEqual(associates, [
+    { name: 'Muhammad Imran', role: 'Senior Associate', portrait: 'muhammadImran' },
+  ]);
+  assert.equal(professionalStaff.length, 5);
+  assert.deepEqual(
+    professionalStaff.slice(0, 3).map(({ name }) => name),
+    ['Muhammad Sadiq', 'Zohaib Hassan', 'Atif Waqas Khan'],
+  );
 });
 
 test('thumbnail paths derive safe extensions from the accepted MIME type', () => {

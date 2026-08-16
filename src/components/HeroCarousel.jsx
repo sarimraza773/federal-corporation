@@ -14,8 +14,8 @@ const slidesBase = [
   },
   {
     image: slide1,
-    tag: 'Taxation',
-    title: 'Taxation',
+    tag: 'Taxation (Direct and Indirect)',
+    title: 'Taxation (Direct and Indirect)',
     desc: 'Filing, tax advisory, and litigation.',
   },
   {
@@ -28,7 +28,7 @@ const slidesBase = [
 
 const heroServices = [
   { label: 'Property & Real Estate', to: '/services/real-estate-conveyance' },
-  { label: 'Taxation', to: '/services/taxation' },
+  { label: 'Taxation (Direct and Indirect)', to: '/services/taxation' },
   { label: 'Corporate & Commercial', to: '/services/corporate' },
   { label: 'Intellectual Property', to: '/services/intellectual-property' },
   { label: 'Anti Money Laundering & Anti Benami', to: '/services/anti-money-laundering' },

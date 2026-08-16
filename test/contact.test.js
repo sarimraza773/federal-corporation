@@ -4,8 +4,8 @@ import { contactLimits, normalizeContactInput, validateContactInput } from '../s
 
 test('contact input is trimmed and email is normalized', () => {
   assert.deepEqual(
-    normalizeContactInput({ name: '  John   Smith ', email: ' JOHN@Example.COM ', message: '  Hello there.\r\n ' }),
-    { name: 'John Smith', email: 'john@example.com', message: 'Hello there.' },
+    normalizeContactInput({ name: '  John   Smith ', email: ' JOHN@Example.COM ', contactNumber: ' +92  300 1234567 ', message: '  Hello there.\r\n ' }),
+    { name: 'John Smith', email: 'john@example.com', contactNumber: '+92 300 1234567', message: 'Hello there.' },
   );
 });
 
@@ -13,17 +13,19 @@ test('contact validation accepts a sensible inquiry', () => {
   const result = validateContactInput({
     name: 'John Smith',
     email: 'john@example.com',
+    contactNumber: '+92 300 1234567',
     message: 'I would like to arrange a consultation.',
   });
   assert.deepEqual(result.errors, {});
 });
 
 test('contact validation rejects empty, malformed, short, and oversized values', () => {
-  assert.deepEqual(Object.keys(validateContactInput({}).errors), ['name', 'email', 'message']);
-  assert.equal(validateContactInput({ name: 'J', email: 'invalid', message: 'short' }).errors.email, 'Please enter a valid email address.');
+  assert.deepEqual(Object.keys(validateContactInput({}).errors), ['name', 'email', 'contactNumber', 'message']);
+  assert.equal(validateContactInput({ name: 'J', email: 'invalid', contactNumber: '123', message: 'short' }).errors.email, 'Please enter a valid email address.');
   assert.ok(validateContactInput({
     name: 'A'.repeat(contactLimits.name.max + 1),
     email: 'john@example.com',
+    contactNumber: '+92 300 1234567',
     message: 'M'.repeat(contactLimits.message.max + 1),
   }).errors.message);
 });

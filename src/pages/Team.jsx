@@ -10,7 +10,7 @@ import atifWaqasKhanPortrait from '../assets/team/Atif_Waqas_Khan_DP_normalized.
 import muhammadImranPortrait from '../assets/team/Muhammad_Imran_DP_normalized.jpeg';
 import nadirHussainPortrait from '../assets/team/Nadir_Hussain_DP_normalized.jpeg';
 import wajahatRazaPortrait from '../assets/team/Wajahat_Raza_DP_normalized.jpeg';
-import { managingPartners, professionalStaff } from '../data/team.js';
+import { associates, managingPartners, professionalStaff } from '../data/team.js';
 
 const portraits = {
   faiq: { src: faiqPortrait, width: 1066, height: 1600 },
@@ -41,6 +41,32 @@ function PartnerBadges({ credentials }) {
         </span>
       ))}
     </div>
+  );
+}
+
+function StaffCard({ member, className = '' }) {
+  const portrait = staffPortraits[member.portrait];
+
+  return (
+    <article
+      className={`overflow-hidden rounded-xl border border-navy-900/10 bg-white/30 shadow-soft backdrop-blur-sm ${className}`.trim()}
+    >
+      <div className="aspect-square overflow-hidden bg-[#d0d1d2]">
+        <img
+          src={portrait.src}
+          alt={`${member.name}, ${member.role}`}
+          width={portrait.width}
+          height={portrait.height}
+          loading="lazy"
+          decoding="async"
+          className="h-full w-full object-cover object-center"
+        />
+      </div>
+      <div className="border-t border-navy-900/10 px-5 py-4">
+        <h4 className="font-medium tracking-tightish text-ink-100">{member.name}</h4>
+        <p className="mt-1 text-sm text-ink-200/80">{member.role}</p>
+      </div>
+    </article>
   );
 }
 
@@ -115,6 +141,30 @@ export default function Team() {
         <div className="mt-16 border-t border-navy-900/15 pt-12">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-maroon-900">
+              Associates
+            </p>
+            <h3 className="mt-3 font-serif text-2xl tracking-tightish text-ink-100 sm:text-3xl">
+              Focused legal support and client service
+            </h3>
+            <p className="mt-4 text-sm leading-6 text-ink-200/80">
+              Supporting the Firm’s legal work with diligence, responsiveness, and attention to detail.
+            </p>
+          </div>
+
+          <div className="mx-auto mt-8 grid max-w-6xl grid-cols-1 gap-5 lg:grid-cols-3">
+            {associates.map((member) => (
+              <StaffCard
+                key={`${member.name}-${member.role}`}
+                member={member}
+                className="lg:col-start-2"
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-16 border-t border-navy-900/15 pt-12">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-maroon-900">
               Professional Staff
             </p>
             <h3 className="mt-3 font-serif text-2xl tracking-tightish text-ink-100 sm:text-3xl">
@@ -125,32 +175,14 @@ export default function Team() {
             </p>
           </div>
 
-          <div className="mx-auto mt-8 grid max-w-6xl grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {professionalStaff.map((member) => {
-              const portrait = staffPortraits[member.portrait];
-              return (
-                <article
-                  key={`${member.name}-${member.role}`}
-                  className="overflow-hidden rounded-xl border border-navy-900/10 bg-white/30 shadow-soft backdrop-blur-sm"
-                >
-                  <div className="aspect-square overflow-hidden bg-[#d0d1d2]">
-                    <img
-                      src={portrait.src}
-                      alt={`${member.name}, ${member.role}`}
-                      width={portrait.width}
-                      height={portrait.height}
-                      loading="lazy"
-                      decoding="async"
-                      className="h-full w-full object-cover object-center"
-                    />
-                  </div>
-                  <div className="border-t border-navy-900/10 px-5 py-4">
-                    <h4 className="font-medium tracking-tightish text-ink-100">{member.name}</h4>
-                    <p className="mt-1 text-sm text-ink-200/80">{member.role}</p>
-                  </div>
-                </article>
-              );
-            })}
+          <div className="mx-auto mt-8 grid max-w-6xl grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-6">
+            {professionalStaff.map((member, index) => (
+              <StaffCard
+                key={`${member.name}-${member.role}`}
+                member={member}
+                className={`lg:col-span-2 ${index === 3 ? 'lg:col-start-2' : ''}`}
+              />
+            ))}
           </div>
         </div>
       </Section>
